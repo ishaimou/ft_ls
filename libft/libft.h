@@ -33,12 +33,34 @@ typedef struct		s_mult
 	char			*s;
 }					t_mult;
 
+typedef struct		s_bt
+{
+	void			*item;
+	struct s_bt		*left;
+	struct s_bt		*right;
+}					t_bt;
+
 typedef struct		s_list
 {
 	void			*content;
 	size_t			content_size;
 	struct s_list	*next;
 }					t_list;
+
+/*
+** BTREE Functions
+*/
+
+t_bt				*bt_create_node(void *item);
+void				bt_insert_item(t_bt **root, void *item, int (*cmpf)(void *, void *));
+t_bt				*bt_search_item(t_bt *root, void *data_ref, int (*cmpf)(void *, void *));
+void				bt_apply_infix(t_bt *root, void (*applyf)(void *));
+void				bt_apply_revinfix(t_bt *root, void (*applyf)(void *));
+void				bt_apply_prefix(t_bt *root, void (*applyf)(void *));
+void				bt_apply_suffix(t_bt *root, void (*applyf)(void *));
+int					bt_size_count(t_bt *root);
+int					bt_level_count(t_bt *root);
+void				bt_free(t_bt **root);
 
 int					get_next_line(const int fd, char **line);
 void				ft_printhex(int n);

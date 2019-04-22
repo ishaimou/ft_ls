@@ -14,6 +14,38 @@
 # include <time.h>
 # include "libft.h"
 
+typedef struct		s_opt
+{
+	int		l:1;
+	int		a:1:
+	int		r:1;
+	int		t:1;
+	int		i:1;
+	int		o:1;
+	int		g:1;
+	int		m:1;
+	int		p:1;
+	int		n:1;
+	int		one:1;
+	int		cap_a:1;
+	int		cap_r:1;
+	int		cap_s:1;
+	int		cap_g:1;
+}			t_opt;
 
+typedef struct		s_file
+{
+	char		*name;
+	char		*path;
+	struct stat	*stats;
+	t_bt		*node;
+}			t_file;
+
+typedef struct		s_ls
+{
+	t_opt		opt;
+	t_file		file;
+	t_bt		bt_arg;
+}			t_ls;
 
 #endif

@@ -20,8 +20,8 @@ void	init_opts(t_ls *ls)
 
 void	ft_usage(char c)
 {
-	ft_printf("ls: illegal option -- %c\n", c)
-	ft_printf("usage: ls [-1lartiogmpnRSAG] [file ...]\n");
+	ft_dprintf(2, "ls: illegal option -- %c\n", c)
+	ft_dprintf(2, "usage: ls [-1lartiogmpnRSAG] [file ...]\n");
 	exit(-1);
 }
 
@@ -55,7 +55,7 @@ void	error_mallloc(void)
 	exit(-1);
 }
 
-t_file	*init_file(char *name, char *path, struct stat *stats, t_bt *node)
+t_file	*init_file(char *name, char *path, struct stat *stats, t_opt *opts)
 {
 	t_file	*file;
 
@@ -64,7 +64,7 @@ t_file	*init_file(char *name, char *path, struct stat *stats, t_bt *node)
 	file->name = name;
 	file->path = path;
 	file->stats = stats;
-	file->node = node;
+	file->opts = opts;
 	return (file);
 }
 
@@ -84,7 +84,7 @@ void	parse(int ac, char **av, t_ls *ls)
 			error_malloc();
 		if (stat(av[i], stats) == -1)
 			
-		file = init_file(av[i], NULL, stats, NULL);
+		file = init_file(av[i], NULL, stats, ls->opts);
 		i++;
 	}
 }

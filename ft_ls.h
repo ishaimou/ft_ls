@@ -36,6 +36,7 @@ typedef struct		s_opt
 typedef struct		s_file
 {
 	int		invalid:1;
+	t_opt		*opts;
 	char		*name;
 	char		*path;
 	struct stat	*stats;

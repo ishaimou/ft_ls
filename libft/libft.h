@@ -60,7 +60,7 @@ void				bt_apply_prefix(t_bt *root, void (*applyf)(void *));
 void				bt_apply_suffix(t_bt *root, void (*applyf)(void *));
 int					bt_size_count(t_bt *root);
 int					bt_level_count(t_bt *root);
-void				bt_free(t_bt **root);
+void				bt_free(t_bt **root, void (*freef)(void **));
 
 int					get_next_line(const int fd, char **line);
 void				ft_printhex(int n);

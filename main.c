@@ -62,12 +62,17 @@ t_file	*init_file(char *name, char *path, t_opt *opts)
 	if (!(file = (t_file*)malloc(sizeof(t_file))))
 		error_malloc();
 	file->name = ft_strdup(name);
-	file->path = ft_strdup(path);
+	if (!*path)
+		file->path = ft_strdup(file->name);
 	file->opts = opts;
 	if (!(file->stats = (struct stat*)malloc(sizeof(struct stat))))
 		error_malloc();
-	if (stat(file->name, file->stats) == -1)
+	if (stat(file->path, file->stats) == -1)
+	{
+		printf("STAT FAILED\n");
+		free(file->stats);
 		file->stats = NULL;
+	}
 	file->error = (!file->stats) ? errno : 0;
 	return (file);
 }
@@ -83,18 +88,18 @@ int	ft_cmp_time(t_file *f1, t_file *f2)
 {
 	if (f1->stats->st_mtime == f2->stats->st_mtime)
 		return (ft_strcmp(f1->name, f2->name));
-	return (f1->stats->st_atime < f2->stats->st_atime ? -1 : 1);
+	return (f1->stats->st_mtime < f2->stats->st_mtime ? -1 : 1);
 }
 
-int	ft_cmp(void* data1, void *data2)
+int	ft_cmp(void* item1, void *item2)
 {
 	t_file	*f1;
 	t_file	*f2;
 	int		rev;
 	int		ret;
 	
-	f1 = (t_file*)data1;
-	f2 = (t_file*)data2;
+	f1 = (t_file*)item1;
+	f2 = (t_file*)item2;
 	if (f1->opts->cap_s)
 		ret = ft_cmp_size(f1, f2);
 	if (f1->opts->t && !f1->opts->cap_s)
@@ -111,7 +116,6 @@ void	parse(int ac, char **av, t_ls *ls)
 	int		i;
 
 	i = 1;
-	file->error = 0;
 	init_opts(ls);
 	while (i < ac && av[i][0] == '-')
 		add_opts(ls, av[i++]);
@@ -128,6 +132,8 @@ int	main(int ac, char **av)
 
 	parse(ac, av, &ls);
 	bt_apply_infix(ls.root, print_item);
-	
+	printf("size: %d\n", bt_size_count(ls.root));
+	printf("level: %d\n", bt_level_count(ls.root));
+	bt_free(&ls.root, &freef);
 	return (0);
 }

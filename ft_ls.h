@@ -53,5 +53,6 @@ typedef struct	s_ls
 }				t_ls;
 
 void			print_item(void *item);
+void			freef(void **item);
 
 #endif

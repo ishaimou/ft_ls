@@ -81,14 +81,14 @@ int	ft_cmp_size(t_file *f1, t_file *f2)
 {
 	if (f1->stats->st_size == f2->stats->st_size)
 		return (ft_strcmp(f1->name, f2->name));
-	return (f1->stats->st_size < f2->stats->st_size ? -1 : 1);
+	return (f1->stats->st_size < f2->stats->st_size ? 1 : -1);
 }
 
 int	ft_cmp_time(t_file *f1, t_file *f2)
 {
 	if (f1->stats->st_mtime == f2->stats->st_mtime)
 		return (ft_strcmp(f1->name, f2->name));
-	return (f1->stats->st_mtime < f2->stats->st_mtime ? -1 : 1);
+	return (f1->stats->st_mtime < f2->stats->st_mtime ? 1 : -1);
 }
 
 int	ft_cmp(void* item1, void *item2)
@@ -102,9 +102,10 @@ int	ft_cmp(void* item1, void *item2)
 	f2 = (t_file*)item2;
 	if (f1->opts->cap_s)
 		ret = ft_cmp_size(f1, f2);
-	if (f1->opts->t && !f1->opts->cap_s)
+	else if (f1->opts->t)
 		ret = ft_cmp_time(f1, f2);
-	ret = ft_strcmp(f1->name, f2->name);
+	else
+		ret = ft_strcmp(f1->name, f2->name);
 	rev = (f1->opts->r) ? -1 : 1;
 	return (ret * rev);
 }
@@ -129,8 +130,14 @@ void	parse(int ac, char **av, t_ls *ls)
 int	main(int ac, char **av)
 {
 	t_ls	ls;
+	t_file	*file;
 
 	parse(ac, av, &ls);
+	if (!ls.root)
+	{
+		file = init_file(".", "", &ls.opts);
+		bt_insert_item(&ls.root, file, ft_cmp);
+	}
 	bt_apply_infix(ls.root, print_item);
 	printf("size: %d\n", bt_size_count(ls.root));
 	printf("level: %d\n", bt_level_count(ls.root));

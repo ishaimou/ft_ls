@@ -37,23 +37,26 @@ static void		print_mtime(t_file *file)
 {
 	char	*mtime;
 	char	*year;
-	char	*month;
-	char	*day;
+	char	*date;
+//	char	*month;
+//	char	*day;
 	char	*str_time;
 
 	mtime = ctime(&file->stats->st_mtime);
 	year = ft_strndup(mtime + 20, 4);
-	month = ft_strndup(mtime + 4, 3);
-	day = ft_strndup(mtime + 8, 2);
+	//month = ft_strndup(mtime + 4, 3);
+	//day = ft_strndup(mtime + 8, 2);
+	date = ft_strndup(mtime + 4, 6);
 	str_time = ft_strndup(mtime + 11, 5);
-	ft_printf("%2s %3s ", day, month);
-	if (time(NULL) - file->stats->st_mtime > 6 * 30 * 24 * 3600)
+	ft_printf("%6s ", date);
+	if (ABS(time(NULL) - file->stats->st_mtime) > 15552000)
 		ft_printf("%5s ", year);
 	else
 		ft_printf("%5s ", str_time);
-	free(str_time);	
-	free(day);
-	free(month);
+	free(str_time);
+	free(date);
+	//free(day);
+	//free(month);
 	free(year);
 }
 
@@ -63,8 +66,6 @@ void	print_lgformat(t_file *file)
 	int		max_size = 6;
 
 
-	if (file->opts->i)
-		ft_printf("%ld ", (long)file->stats->st_ino);
 	print_type(file);
 	print_modes(file);
 	//print_aclxattr(file);

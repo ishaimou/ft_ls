@@ -38,6 +38,7 @@ typedef struct		s_opt
 typedef struct	s_file
 {
 	int			error;
+	int			is_last;
 	t_opt		*opts;
 	char		*name;
 	char		*path;

@@ -55,27 +55,37 @@ void	error_mallloc(void)
 	exit(-1);
 }
 
-t_file	*init_file(char *name, char *path, struct stat *stats, t_opt *opts)
+t_file	*init_file(char *name, char *path, t_opt *opts)
 {
-	t_file	*file;
+	t_file		*file;
+	struct stat	*stats;
 
 	if (!(file = (t_file*)malloc(sizeof(t_file))))
 		error_malloc();
-	file->name = name;
-	file->path = path;
+	if (!(stats = (struct stat*)malloc(sizeof(struct stat))))
+		error_malloc();
+	if (stat(name, stats) == -1)
+		stats = NULL;
+	file->error = (!stats) ? errno : 0;
+	file->name = ft_strdup(name);
+	file->path = ft_strdup(path);
 	file->stats = stats;
 	file->opts = opts;
 	return (file);
 }
 
-int	ft_cmp_size(struct stat st1, struct stat st2)
+int	ft_cmp_size(t_file *f1, t_file *f2)
 {
-	return (st1->st_size < st2->st_size ? -1 : 1);
+	if (f1->stats->st_size == f2->stats->st_size)
+		return (ft_strcmp(f1->name, f2->name));
+	return (f1->stats->st_size < f2->stats->st_size ? -1 : 1);
 }
 
-int	ft_cmp_time(struct stat st1, struct stat st2)
+int	ft_cmp_time(t_file *f1, t_file *f2)
 {
-	return (st1->st_atime < st2->st_atime ? -1 : 1);
+	if (f1->stats->st_time == f2->stats->st_time)
+		return (ft_strcmp(f1->name, f2->name));
+	return (f1->stats->st_atime < f2->stats->st_atime ? -1 : 1);
 }
 
 int	ft_cmp(void* data1, void *data2)
@@ -85,11 +95,11 @@ int	ft_cmp(void* data1, void *data2)
 
 	f1 = (t_file*)data1;
 	f2 = (t_file*)data2;
-	if (f1->opts.cap_s == 1)
-		return (ft_cmp_size(f1->stats, f2->stats));
-	if (f1->opts.t == 1)
-		return (ft_cmp_time(f1->stats, f2->stats));
-	return (ft_strcmp(f1->name, f2->name));
+	if (f1->opts.cap_s)
+		return (ft_cmp_size(f1, f2) * -(f1->opts.r));
+	if (f1->opts.t)
+		return (ft_cmp_time(f1, f2) * -(f1->opts.r));
+	return (ft_strcmp(f1->name, f2->name) * -(f1->opts.r));
 }
 
 void	parse(int ac, char **av, t_ls *ls)
@@ -99,15 +109,13 @@ void	parse(int ac, char **av, t_ls *ls)
 	int		i;
 
 	i = 0;
+	file->error = 0;
 	init_opts(&ls);
 	while (++i < ac && av[i][0] == '-')
 		add_opts(&ls, av[i]);
 	while (i < ac)
 	{
-		if (!(stats = (struct stat*)malloc(sizeof(struct stat))))
-			error_malloc();
-		//stat(av[i], stats) == -1)
-		file = init_file(av[i++], NULL, stats, ls->opts);
+		file = init_file(av[i++], "", ls->opts);
 		bt_insert_item(ls->root, file, ft_cmp);
 	}
 }

@@ -12,6 +12,7 @@
 # include <pwd.h>
 # include <grp.h>
 # include <time.h>
+# include <errno.h>
 # include "libft.h"
 
 typedef struct		s_opt
@@ -35,7 +36,7 @@ typedef struct		s_opt
 
 typedef struct		s_file
 {
-	int		invalid:1;
+	int		error;
 	t_opt		*opts;
 	char		*name;
 	char		*path;
@@ -45,9 +46,9 @@ typedef struct		s_file
 
 typedef struct		s_ls
 {
-	t_opt		opt;
-	t_file		file;
-	t_bt		bt_arg;
+	t_opt		opts;
+	t_file		*file;
+	t_bt		root;
 }			t_ls;
 
 #endif

@@ -68,6 +68,30 @@ t_file	*init_file(char *name, char *path, struct stat *stats, t_opt *opts)
 	return (file);
 }
 
+int	ft_cmp_size(struct stat st1, struct stat st2)
+{
+	return (st1->st_size < st2->st_size ? -1 : 1);
+}
+
+int	ft_cmp_time(struct stat st1, struct stat st2)
+{
+	return (st1->st_atime < st2->st_atime ? -1 : 1);
+}
+
+int	ft_cmp(void* data1, void *data2)
+{
+	t_file	f1;
+	t_file	f2;
+
+	f1 = (t_file*)data1;
+	f2 = (t_file*)data2;
+	if (f1->opts.cap_s == 1)
+		return (ft_cmp_size(f1->stats, f2->stats));
+	if (f1->opts.t == 1)
+		return (ft_cmp_time(f1->stats, f2->stats));
+	return (ft_strcmp(f1->name, f2->name));
+}
+
 void	parse(int ac, char **av, t_ls *ls)
 {
 	struct stat	*stats;
@@ -82,10 +106,9 @@ void	parse(int ac, char **av, t_ls *ls)
 	{
 		if (!(stats = (struct stat*)malloc(sizeof(struct stat))))
 			error_malloc();
-		if (stat(av[i], stats) == -1)
-			
-		file = init_file(av[i], NULL, stats, ls->opts);
-		i++;
+		//stat(av[i], stats) == -1)
+		file = init_file(av[i++], NULL, stats, ls->opts);
+		bt_insert_item(ls->root, file, ft_cmp);
 	}
 }
 

@@ -18,9 +18,10 @@
 typedef struct		s_opt
 {
 	int		l:1;
-	int		a:1:
+	int		a:1;
 	int		r:1;
 	int		t:1;
+	int		u:1;
 	int		i:1;
 	int		o:1;
 	int		g:1;
@@ -34,21 +35,23 @@ typedef struct		s_opt
 	int		cap_g:1;
 }			t_opt;
 
-typedef struct		s_file
+typedef struct	s_file
 {
-	int		error;
+	int			error;
 	t_opt		*opts;
 	char		*name;
 	char		*path;
 	struct stat	*stats;
 	t_bt		*node;
-}			t_file;
+}				t_file;
 
-typedef struct		s_ls
+typedef struct	s_ls
 {
 	t_opt		opts;
 	t_file		*file;
-	t_bt		root;
-}			t_ls;
+	t_bt		*root;
+}				t_ls;
+
+void			print_item(void *item);
 
 #endif

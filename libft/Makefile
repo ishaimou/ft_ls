@@ -13,7 +13,8 @@ LIBFT  = ft_memset ft_bzero ft_memcpy ft_memccpy ft_memmove ft_memchr ft_printhe
 		 ft_lstdel ft_lstadd ft_lstiter ft_lstmap ft_sqrt ft_prime ft_ultoa\
 		 ft_strlowcase ft_strupcase ft_swap ft_strrev ft_isblank ft_isxdigit\
 		 ft_strnjoin ft_atoi_base ft_strswap ft_strsum ft_str_pushback ft_ulltoa\
-		 ft_lltoa ft_ulltoa_base ft_strpower ft_strmult ft_strcnew ft_ltoa ft_maxmin ft_poslltoa\
+		 ft_lltoa ft_ulltoa_base ft_strpower ft_strmult ft_strcnew ft_ltoa ft_maxmin ft_poslltoa bt_apply_infix bt_apply_revinfix bt_apply_prefix bt_apply_suffix\
+		 bt_create_node bt_insert_item bt_search_item bt_size_count bt_level_count bt_free\
 
 LIBFT_SRC = $(addprefix src/, $(addsuffix .c, $(LIBFT)))
 

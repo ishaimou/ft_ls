@@ -1,6 +1,6 @@
 #include "libft.h"
 
-void	*bt_insert_item(t_bt **root, void *item, int (*cmpf)(void *, void *))
+void	bt_insert_item(t_bt **root, void *item, int (*cmpf)(void *, void *))
 {
 	t_bt	*node;
 

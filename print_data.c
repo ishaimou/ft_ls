@@ -25,28 +25,15 @@ static void	print_orglink(t_file *file)
 	}
 }
 
-char		*strdir(char *str)
-{
-	int		len;
-	char	*strdir;
-
-	len = ft_strlen(str) + 1;
-	strdir = ft_strnew(len);
-	ft_strcat(strdir, str);
-	strdir[len - 1] = '/';
-	return (strdir);
-}
-
 void		rcs_traversal(t_file *file)
 {
-	char			*tmp;
 	t_max			*mw;
 	t_file			*child_file;
 	struct dirent	*dir;
 	DIR				*fluxdir;
 
 	fluxdir = opendir(file->path);
-	ft_printf("\n%s/:\n", file->path);
+	ft_printf("\n%s:\n", file->path);
 	mw = (t_max*)malloc(sizeof(t_max));
 	file->node = NULL;
 	init_mw(mw);
@@ -54,8 +41,8 @@ void		rcs_traversal(t_file *file)
 	{
 		if (ft_strcmp(dir->d_name, ".") && ft_strcmp(dir->d_name, ".."))
 		{
-			tmp = ft_strjoin(strdir(file->name), dir->d_name);
-			child_file = init_file(tmp, "", file->opts);
+			child_file = init_file(dir->d_name, file->path, file->opts);
+			ft_printf("\n\n*****file->path: %s\n\n******file->name: %s\n", file->path, file->name);
 			fill_mw(child_file, mw);
 			if (S_ISDIR(child_file->stats->st_mode))
 				rcs_traversal(child_file);
@@ -66,10 +53,10 @@ void		rcs_traversal(t_file *file)
 	if (mw->count)
 	{
 		bt_apply_infix(file->node, print_item);
-		bt_free(&file->node, &freef);
+	//	bt_free(&file->node, &freef);
 	}
-	else
-		free(file->node);
+	//else
+	//	free(file->node);
 	closedir(fluxdir);
 }
 

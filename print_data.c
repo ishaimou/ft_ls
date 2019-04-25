@@ -31,7 +31,7 @@ void		rcs_traversal(t_file *file)
 	DIR				*fluxdir;
 
 	fluxdir = opendir(file->path);
-	(file->mw->count > 1) ? ft_printf("%s:\n", file->path) : 0;
+	(file->mw->count > 1) ? ft_printf("\n%s:\n", file->path) : 0;
 	mw = (t_max*)malloc(sizeof(t_max));
 	init_mw(mw);
 	while ((dir = readdir(fluxdir)))
@@ -50,7 +50,6 @@ void		rcs_traversal(t_file *file)
 	{
 		bt_apply_infix(file->node, (file->opts->cap_r) ?
 				print_item : print_lvl1);
-		ft_putchar('\n');
 		bt_free(&file->node, &freef);
 	}
 	//else

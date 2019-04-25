@@ -142,6 +142,35 @@ int	ft_cmp(void* item1, void *item2)
 	return (ret * rev);
 }
 
+void	init_mw(t_ls *ls)
+{
+	ls->mw.count = 0;
+	ls->mw.major = 0;
+	ls->mw.minor = 0;
+	ls->mw.size = 1;
+	ls->mw.link = 1;
+}
+
+int		ft_intlen(int nbr)
+{
+	int		len;
+
+	len = 1;
+	while (nbr /= 10)
+		len++;
+	return (len);
+}
+
+void	fill_mw(t_file *file, t_max *mw)
+{
+	file->mw = mw;
+	mw->count++;
+	mw->size = ft_max(mw->size, ft_intlen(file->stats->st_size));
+	mw->link = ft_max(mw->size, ft_intlen(file->stats->st_nlink));
+	mw->major = ft_max(mw->size, ft_intlen(major(file->stats->st_dev)));
+	mw->minor = ft_max(mw->size, ft_intlen(minor(file->stats->st_dev)));
+}
+
 void	parse(int ac, char **av, t_ls *ls)
 {
 	struct stat	*stats;
@@ -150,18 +179,20 @@ void	parse(int ac, char **av, t_ls *ls)
 
 	i = 1;
 	init_opts(ls);
+	init_mw(ls);
 	while (i < ac && av[i][0] == '-')
 		add_opts(ls, av[i++]);
-	
 	if (i == ac)
 	{
 		file = init_file(".", "", &ls->opts);
+		fill_mw(file, &ls->mw);
 		bt_insert_item(&ls->root, file, ft_cmp);
 		return ;
 	}
 	while (i < ac)
 	{
 		file = init_file(av[i++], "", &ls->opts);
+		fill_mw(file, &ls->mw);
 		bt_insert_item(&ls->root, file, ft_cmp);
 	}
 }

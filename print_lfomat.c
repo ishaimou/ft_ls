@@ -1,5 +1,4 @@
 #include "ft_ls.h"
-#include <sys/types.h>
 
 static void		print_type(t_file *file)
 {
@@ -95,10 +94,10 @@ int		is_special(mode_t mode)
 	return (0);
 }
 
-static void		print_maj_min(struct stat *stats)
+static void		print_maj_min(t_file *file)
 {
-	ft_printf("%u,", major(stats->st_rdev));
-	ft_printf("%5u ", minor(stats->st_rdev));
+	ft_printf("%u,", major(file->stats->st_rdev));
+	ft_printf("%*u ", file->mw->minor, minor(file->stats->st_rdev));
 }
 
 void	print_lgformat(t_file *file)
@@ -107,18 +106,18 @@ void	print_lgformat(t_file *file)
 	int		max_size = 6;
 
 	print_modes(file);
-	ft_printf("  %*ld", max_link, (long)file->stats->st_nlink);
+	ft_printf(" %*ld", file->mw->link, (long)file->stats->st_nlink);
 	if (!file->opts->g && !file->opts->n)
 		ft_printf(" %s ", getpwuid(file->stats->st_uid)->pw_name);
 	if (!file->opts->o && !file->opts->n)
 		ft_printf(" %s ", getgrgid(file->stats->st_gid)->gr_name);
 	if (file->opts->n && !file->opts->g)
-		ft_printf("%ld  ", file->stats->st_uid);
+		ft_printf("%ld ", file->stats->st_uid);
 	if (file->opts->n && !file->opts->o)
-		ft_printf("%ld  ", file->stats->st_gid);
+		ft_printf("%ld ", file->stats->st_gid);
 	if (is_special(file->stats->st_mode))
-		print_maj_min(file->stats);
+		print_maj_min(file);
 	else
-		ft_printf("%*lld ", max_size, (long long)file->stats->st_size);
+		ft_printf(" %*lld ", file->mw->size, (long long)file->stats->st_size);
 	print_amtime(file);
 }

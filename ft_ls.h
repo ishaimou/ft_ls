@@ -36,8 +36,18 @@ typedef struct		s_opt
 	int		cap_g:1;
 }			t_opt;
 
+typedef struct	s_max
+{
+	int			count;
+	int			link;
+	int			size;
+	int			major;
+	int			minor;
+}				t_max;
+
 typedef struct	s_file
 {
+	t_max		*mw;
 	int			error;
 	t_opt		*opts;
 	char		*name;
@@ -49,6 +59,7 @@ typedef struct	s_file
 typedef struct	s_ls
 {
 	t_opt		opts;
+	t_max		mw;
 	t_file		*file;
 	t_bt		*root;
 }				t_ls;

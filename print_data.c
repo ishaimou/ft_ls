@@ -25,20 +25,78 @@ static void	print_orglink(t_file *file)
 	}
 }
 
+char		*strdir(char *str)
+{
+	int		len;
+	char	*strdir;
+
+	len = ft_strlen(str) + 1;
+	strdir = ft_strnew(len);
+	ft_strcat(strdir, str);
+	strdir[len - 1] = '/';
+	return (strdir);
+}
+
+void		rcs_traversal(t_file *file)
+{
+	char			*s;
+	char			*tmp;
+	t_max			*mw;
+	t_file			*child_file;
+	struct dirent	*dir;
+	DIR				*fluxdir;
+
+	if (ft_strcmp(file->name, ".") && ft_strcmp(file->name, ".."))
+	{
+		s = (file->opts->p && S_ISDIR(file->stats->st_mode)) ? "/" : "";
+		fluxdir = opendir(file->path);
+		ft_printf("\n%s%s\n", file->path, s);
+		mw = (t_max*)malloc(sizeof(t_max));
+		file->node = (t_bt*)malloc(sizeof(t_bt));
+		init_mw(mw);
+		while ((dir = readdir(fluxdir)))
+		{
+			if (ft_strcmp(dir->d_name, ".") || ft_strcmp(dir->d_name, ".."))
+			{
+				tmp = ft_strjoin(strdir(file->name), child_file->name);
+				child_file = init_file(dir->d_name, tmp, file->opts);
+				fill_mw(child_file, mw);
+				if (S_ISDIR(child_file->stats->st_mode))
+					rcs_traversal(child_file);
+				else
+					bt_insert_item(&file->node, child_file, ft_cmp);
+			}
+		}
+		if (file->mw->count)
+		{
+			bt_apply_infix(file->node, print_item);
+			bt_free(&file->node, &freef);
+		}
+		free(mw);
+	}
+}
+
 void		print_item(void *item)
 {
-	t_file	*file;
-	char	*s1;
-	char	*s2;
+	t_file			*file;
+	char			*s1;
+	char			*s2;
 
 	file = (t_file*)item;
+	if (file->name[0] == '.' && !file->opts->a)
+		return ;
 	s1 = (file->opts->p && S_ISDIR(file->stats->st_mode)) ? "/" : "";
 	s2 = (file->opts->m) ? ", " : "\n";
-	if (file->opts->i)
-		ft_printf("%ld ", (long)file->stats->st_ino);
-	if (is_large(file->opts))
-		print_lgformat(file);
-	ft_printf("%s%s", file->name, s1);
-	print_orglink(file);
-	ft_putstr((--file->mw->count) ? s2 : "\n");
+	if (file->opts->cap_r && S_ISDIR(file->stats->st_mode))
+		rcs_traversal(file);
+	else
+	{
+		if (file->opts->i)
+			ft_printf("%ld ", (long)file->stats->st_ino);
+		if (is_large(file->opts))
+			print_lgformat(file);
+		ft_printf("%s%s", file->name, s1);
+			print_orglink(file);
+		ft_putstr((--file->mw->count) ? s2 : "\n");
+	}
 }

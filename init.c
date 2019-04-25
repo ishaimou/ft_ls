@@ -34,18 +34,18 @@ t_file	*init_file(char *name, char *path, t_opt *opts)
 	if (lstat(file->path, file->stats) == -1)
 	{
 		printf("STAT FAILED\n");
-		free(file->stats);
-		file->stats = NULL;
+		//free(file->stats);
+		//file->stats = NULL;
 	}
 	file->error = (!file->stats) ? errno : 0;
 	return (file);
 }
 
-void	init_mw(t_ls *ls)
+void	init_mw(t_max *mw)
 {
-	ls->mw.count = 0;
-	ls->mw.major = 0;
-	ls->mw.minor = 0;
-	ls->mw.size = 1;
-	ls->mw.link = 1;
+	mw->count = 0;
+	mw->major = 0;
+	mw->minor = 0;
+	mw->size = 1;
+	mw->link = 1;
 }

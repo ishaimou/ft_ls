@@ -18,7 +18,7 @@ void		parse(int ac, char **av, t_ls *ls)
 
 	i = 1;
 	init_opts(ls);
-	init_mw(ls);
+	init_mw(&ls->mw);
 	while (i < ac && av[i][0] == '-')
 		add_opts(ls, av[i++]);
 	if (i == ac)

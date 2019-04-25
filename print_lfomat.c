@@ -14,8 +14,8 @@ static void		print_type(t_file *file)
 		ft_putchar('l');
 	else if (S_ISSOCK(file->stats->st_mode))
 		ft_putchar('s');
-	//else if (S_ISREG(file->stats->st_mode))
-	//	ft_putchar('-');
+	else if (S_ISREG(file->stats->st_mode))
+		ft_putchar('-');
 	else
 		ft_putchar('-');
 }
@@ -41,14 +41,20 @@ static void		print_modes(t_file *file)
 	print_type(file);
 	(file->stats->st_mode & S_IRUSR) ? ft_putchar('r') : ft_putchar('-');
 	(file->stats->st_mode & S_IWUSR) ? ft_putchar('w') : ft_putchar('-');
-	(file->stats->st_mode & S_IXUSR) ? ft_putchar('x') : ft_putchar('-');
+	if (file->stats->st_mode & S_ISUID)
+		ft_putchar('s');
+	else
+		(file->stats->st_mode & S_IXUSR) ? ft_putchar('x') : ft_putchar('-');
 	(file->stats->st_mode & S_IRGRP) ? ft_putchar('r') : ft_putchar('-');
 	(file->stats->st_mode & S_IWGRP) ? ft_putchar('w') : ft_putchar('-');
-	(file->stats->st_mode & S_IXGRP) ? ft_putchar('x') : ft_putchar('-');
+	if (file->stats->st_mode & S_ISGID)
+		ft_putchar('s');
+	else
+		(file->stats->st_mode & S_IXGRP) ? ft_putchar('x') : ft_putchar('-');
 	(file->stats->st_mode & S_IROTH) ? ft_putchar('r') : ft_putchar('-');
 	(file->stats->st_mode & S_IWOTH) ? ft_putchar('w') : ft_putchar('-');
 	if (file->stats->st_mode & S_ISVTX)
-		ft_putchar('T');
+		ft_putchar('t');
 	else
 		(file->stats->st_mode & S_IXOTH) ? ft_putchar('x') : ft_putchar('-');
 	print_aclxattr(file);

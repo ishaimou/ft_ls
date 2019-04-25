@@ -48,6 +48,7 @@ t_file	*init_file(char *name, char *path, t_opt *opts)
 	file->name = ft_strdup(name);
 	file->path = set_path(file, path);
 	file->opts = opts;
+	file->node = NULL;
 	if (!(file->stats = (struct stat*)malloc(sizeof(struct stat))))
 		exit(-1);
 	if (lstat(file->path, file->stats) == -1)

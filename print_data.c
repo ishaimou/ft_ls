@@ -2,10 +2,8 @@
 
 static int	is_large(t_opt *opts)
 {
-	if (opts->l ||
-		opts->n ||
-		opts->o ||
-		opts->g )
+	if (opts->l || opts->n ||
+		opts->o || opts->g )
 		return (1);
 	return (0);
 }
@@ -32,34 +30,32 @@ void		rcs_traversal(t_file *file)
 	struct dirent	*dir;
 	DIR				*fluxdir;
 
-		fluxdir = opendir(file->path);
-		ft_printf("\n%s:\n", file->path);
-		mw = (t_max*)malloc(sizeof(t_max));
-		file->node = NULL;
-		init_mw(mw);
-		while ((dir = readdir(fluxdir)))
+	fluxdir = opendir(file->path);
+	(file->mw->count > 1) ? ft_printf("%s:\n", file->path) : 0;
+	mw = (t_max*)malloc(sizeof(t_max));
+	init_mw(mw);
+	while ((dir = readdir(fluxdir)))
+	{
+		if (ft_strcmp(dir->d_name, ".") && ft_strcmp(dir->d_name, ".."))
 		{
-			if (ft_strcmp(dir->d_name, ".") && ft_strcmp(dir->d_name, ".."))
-			{
-				child_file = init_file(dir->d_name, file->path, file->opts);
-				fill_mw(child_file, mw);
-				if (file->opts->cap_r && S_ISDIR(child_file->stats->st_mode))
-					rcs_traversal(child_file);
-				else
-					bt_insert_item(&file->node, child_file, ft_cmp);
-			}
-		}
-		if (mw->count)
-		{
-			if (file->opts->cap_r)
-				bt_apply_infix(file->node, print_item);
+			child_file = init_file(dir->d_name, file->path, file->opts);
+			fill_mw(child_file, mw);
+			if (file->opts->cap_r && S_ISDIR(child_file->stats->st_mode))
+				rcs_traversal(child_file);
 			else
-				bt_apply_infix(file->node, print_lvl1);
-			bt_free(&file->node, &freef);
+				bt_insert_item(&file->node, child_file, ft_cmp);
 		}
-		else
-			free(file->node);
-		closedir(fluxdir);
+	}
+	if (mw->count)
+	{
+		bt_apply_infix(file->node, (file->opts->cap_r) ?
+				print_item : print_lvl1);
+		ft_putchar('\n');
+		bt_free(&file->node, &freef);
+	}
+	//else
+	//	free(file->node);
+	closedir(fluxdir);
 }
 
 static int	is_exec(t_file *file)

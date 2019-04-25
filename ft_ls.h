@@ -8,6 +8,7 @@
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <sys/xattr.h>
+# include <sys/acl.h>
 # include <uuid/uuid.h>
 # include <pwd.h>
 # include <grp.h>
@@ -38,7 +39,6 @@ typedef struct		s_opt
 typedef struct	s_file
 {
 	int			error;
-	int			is_last;
 	t_opt		*opts;
 	char		*name;
 	char		*path;

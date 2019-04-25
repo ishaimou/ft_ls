@@ -16,7 +16,7 @@ void		print_item(void *item)
 	char	*s;
 
 	file = (t_file*)item;
-	s = (file->opts->m && !file->is_last) ? ", " : "\n";
+	s = (file->opts->p && S_ISDIR(file->stats->st_mode)) ? "/" : "\n";
 	if (file->opts->i)
 		ft_printf("%ld ", (long)file->stats->st_ino);
 	if (is_large(file->opts))

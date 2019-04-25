@@ -67,5 +67,10 @@ typedef struct	s_ls
 void			print_item(void *item);
 void			print_lgformat(t_file *file);
 void			freef(void **item);
+void			add_opts(t_ls *ls, char *s);
+int				ft_cmp(void* item1, void *item2);
+void			init_mw(t_ls *ls);
+void			init_opts(t_ls *ls);
+t_file			*init_file(char *name, char *path, t_opt *opts);
 
 #endif

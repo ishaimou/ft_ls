@@ -10,26 +10,35 @@ static int	is_large(t_opt *opts)
 	return (0);
 }
 
-void		print_item(void *item)
+static void	print_orglink(t_file *file)
 {
-	t_file	*file;
 	char	*org;
-	char	*s;
 
-	file = (t_file*)item;
-	s = (file->opts->p && S_ISDIR(file->stats->st_mode)) ? "/" : "";
-	if (file->opts->i)
-		ft_printf("%ld ", (long)file->stats->st_ino);
-	if (is_large(file->opts))
-		print_lgformat(file);
-	ft_printf("%s%s", file->name, s);
-	if (S_ISLNK(file->stats->st_mode))
+	if (is_large(file->opts) &&
+		S_ISLNK(file->stats->st_mode))
 	{
 		ft_putstr(" -> ");
 		org = ft_strnew(50);
 		readlink(file->path, org, 50);
-		ft_printf("%s", org);
+		ft_putstr(org);
 		free(org);
 	}
-	ft_putchar('\n');
+}
+
+void		print_item(void *item)
+{
+	t_file	*file;
+	char	*s1;
+	char	*s2;
+
+	file = (t_file*)item;
+	s1 = (file->opts->p && S_ISDIR(file->stats->st_mode)) ? "/" : "";
+	s2 = (file->opts->m) ? ", " : "\n";
+	if (file->opts->i)
+		ft_printf("%ld ", (long)file->stats->st_ino);
+	if (is_large(file->opts))
+		print_lgformat(file);
+	ft_printf("%s%s", file->name, s1);
+	print_orglink(file);
+	ft_putstr((--file->mw->count) ? s2 : "\n");
 }

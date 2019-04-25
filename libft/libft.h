@@ -64,6 +64,7 @@ void				bt_free(t_bt **root, void (*freef)(void **));
 
 int					get_next_line(const int fd, char **line);
 void				ft_printhex(int n);
+int					ft_intlen(int n);
 void				*ft_memset(void *b, int c, size_t len);
 void				ft_bzero(void *s, size_t n);
 void				*ft_memcpy(void *dest, const void *src, size_t n);

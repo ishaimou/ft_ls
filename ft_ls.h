@@ -65,6 +65,7 @@ typedef struct	s_ls
 }				t_ls;
 
 void			print_item(void *item);
+void			print_lvl1(void *item);
 void			print_lgformat(t_file *file);
 void			freef(void **item);
 void			add_opts(t_ls *ls, char *s);

@@ -39,41 +39,38 @@ char		*strdir(char *str)
 
 void		rcs_traversal(t_file *file)
 {
-	char			*s;
 	char			*tmp;
 	t_max			*mw;
 	t_file			*child_file;
 	struct dirent	*dir;
 	DIR				*fluxdir;
 
-	if (ft_strcmp(file->name, ".") && ft_strcmp(file->name, ".."))
+	fluxdir = opendir(file->path);
+	ft_printf("\n%s/:\n", file->path);
+	mw = (t_max*)malloc(sizeof(t_max));
+	file->node = NULL;
+	init_mw(mw);
+	while ((dir = readdir(fluxdir)))
 	{
-		s = (file->opts->p && S_ISDIR(file->stats->st_mode)) ? "/" : "";
-		fluxdir = opendir(file->path);
-		ft_printf("\n%s%s\n", file->path, s);
-		mw = (t_max*)malloc(sizeof(t_max));
-		file->node = (t_bt*)malloc(sizeof(t_bt));
-		init_mw(mw);
-		while ((dir = readdir(fluxdir)))
+		if (ft_strcmp(dir->d_name, ".") && ft_strcmp(dir->d_name, ".."))
 		{
-			if (ft_strcmp(dir->d_name, ".") || ft_strcmp(dir->d_name, ".."))
-			{
-				tmp = ft_strjoin(strdir(file->name), child_file->name);
-				child_file = init_file(dir->d_name, tmp, file->opts);
-				fill_mw(child_file, mw);
-				if (S_ISDIR(child_file->stats->st_mode))
-					rcs_traversal(child_file);
-				else
-					bt_insert_item(&file->node, child_file, ft_cmp);
-			}
+			tmp = ft_strjoin(strdir(file->name), dir->d_name);
+			child_file = init_file(tmp, "", file->opts);
+			fill_mw(child_file, mw);
+			if (S_ISDIR(child_file->stats->st_mode))
+				rcs_traversal(child_file);
+			else
+				bt_insert_item(&file->node, child_file, ft_cmp);
 		}
-		if (file->mw->count)
-		{
-			bt_apply_infix(file->node, print_item);
-			bt_free(&file->node, &freef);
-		}
-		free(mw);
 	}
+	if (mw->count)
+	{
+		bt_apply_infix(file->node, print_item);
+		bt_free(&file->node, &freef);
+	}
+	else
+		free(file->node);
+	closedir(fluxdir);
 }
 
 void		print_item(void *item)
@@ -87,7 +84,8 @@ void		print_item(void *item)
 		return ;
 	s1 = (file->opts->p && S_ISDIR(file->stats->st_mode)) ? "/" : "";
 	s2 = (file->opts->m) ? ", " : "\n";
-	if (file->opts->cap_r && S_ISDIR(file->stats->st_mode))
+	if (file->opts->cap_r && S_ISDIR(file->stats->st_mode) &&
+		ft_strcmp(file->name, ".") && ft_strcmp(file->name, ".."))
 		rcs_traversal(file);
 	else
 	{

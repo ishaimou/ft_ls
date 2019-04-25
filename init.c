@@ -51,13 +51,7 @@ t_file	*init_file(char *name, char *path, t_opt *opts)
 	file->node = NULL;
 	if (!(file->stats = (struct stat*)malloc(sizeof(struct stat))))
 		exit(-1);
-	if (lstat(file->path, file->stats) == -1)
-	{
-		printf("STAT FAILED\n");
-		//free(file->stats);
-		//file->stats = NULL;
-	}
-	file->error = (!file->stats) ? errno : 0;
+	file->error = (lstat(file->path, file->stats) == -1) ? errno : 0;
 	return (file);
 }
 

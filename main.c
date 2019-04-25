@@ -19,6 +19,16 @@ void		fill_mw(t_file *file, t_max *mw)
 	mw->minor = ft_max(mw->size, ft_intlen(minor(file->stats->st_dev)));
 }
 
+int			ft_cmp_enoent(void *item1, void *item2)
+{
+	t_file	*f1;
+	t_file	*f2;
+
+	f1 = (t_file*)item1;
+	f2 = (t_file*)item2;
+	return (ft_strcmp(f1->name, f2->name));
+}
+
 void		parse(int ac, char **av, t_ls *ls)
 {
 	struct stat	*stats;
@@ -40,9 +50,22 @@ void		parse(int ac, char **av, t_ls *ls)
 	while (i < ac)
 	{
 		file = init_file(av[i++], "", &ls->opts);
-		fill_mw(file, &ls->mw);
-		bt_insert_item(&ls->root, file, ft_cmp);
+		if (file->error == ENOENT)
+			bt_insert_item(&ls->invtree, file, ft_cmp_enoent);
+		else
+		{
+			fill_mw(file, &ls->mw);
+			bt_insert_item(&ls->root, file, ft_cmp);
+		}
 	}
+}
+
+void		print_enoent(void *item)
+{
+	t_file	*file;
+
+	file = (t_file*)item;
+	ft_dprintf(2, "ft_ls: %s: No such file or directory\n", file->name);
 }
 
 int			main(int ac, char **av)
@@ -51,6 +74,7 @@ int			main(int ac, char **av)
 	t_file	*file;
 
 	parse(ac, av, &ls);
+	bt_apply_infix(ls.invtree, print_enoent);
 	bt_apply_infix(ls.root, print_item);
 	//printf("size: %d\n", bt_size_count(ls.root));
 	//printf("level: %d\n", bt_level_count(ls.root));

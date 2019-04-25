@@ -66,6 +66,7 @@ typedef struct	s_ls
 	t_max		mw;
 	t_file		*file;
 	t_bt		*root;
+	t_bt		*invtree;
 }				t_ls;
 
 void			print_item(void *item);

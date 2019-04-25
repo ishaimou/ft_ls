@@ -67,4 +67,6 @@ void	init_mw(t_max *mw)
 	mw->minor = 0;
 	mw->size = 1;
 	mw->link = 1;
+	mw->own = 0;
+	mw->grp = 0;
 }

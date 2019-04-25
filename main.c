@@ -2,8 +2,17 @@
 
 void		fill_mw(t_file *file, t_max *mw)
 {
+	struct group	*grp;
+	struct passwd	*own;
+
 	file->mw = mw;
 	mw->count++;
+	grp = getgrgid(file->stats->st_gid);
+	own = getpwuid(file->stats->st_uid);
+	mw->grp = ft_max(mw->grp, ft_strlen(grp->gr_name));
+	mw->own = ft_max(mw->own, ft_strlen(own->pw_name));
+	mw->ngrp = ft_max(mw->ngrp, ft_intlen(file->stats->st_gid));
+	mw->nown = ft_max(mw->ngrp, ft_intlen(file->stats->st_uid));
 	mw->size = ft_max(mw->size, ft_intlen(file->stats->st_size));
 	mw->link = ft_max(mw->size, ft_intlen(file->stats->st_nlink));
 	mw->major = ft_max(mw->size, ft_intlen(major(file->stats->st_dev)));

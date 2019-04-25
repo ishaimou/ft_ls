@@ -41,6 +41,10 @@ typedef struct	s_max
 	int			count;
 	int			link;
 	int			size;
+	int			own;
+	int			grp;
+	int			nown;
+	int			ngrp;
 	int			major;
 	int			minor;
 }				t_max;

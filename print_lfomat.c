@@ -15,14 +15,31 @@ static void		print_type(t_file *file)
 		ft_putchar('l');
 	else if (S_ISSOCK(file->stats->st_mode))
 		ft_putchar('s');
-	else if (S_ISREG(file->stats->st_mode))
-		ft_putchar('-');
+	//else if (S_ISREG(file->stats->st_mode))
+	//	ft_putchar('-');
 	else
 		ft_putchar('-');
 }
 
+static void		print_aclxattr(t_file *file)
+{
+	acl_t	acl;
+
+	acl = acl_get_link_np(file->path, ACL_TYPE_EXTENDED);
+	if (listxattr(file->path, NULL, 0, XATTR_NOFOLLOW))
+		ft_putchar('@');
+	else if (acl)
+	{
+		ft_putchar('+');
+		acl_free(acl);
+	}
+	else
+		ft_putchar(' ');
+}
+
 static void		print_modes(t_file *file)
 {
+	print_type(file);
 	(file->stats->st_mode & S_IRUSR) ? ft_putchar('r') : ft_putchar('-');
 	(file->stats->st_mode & S_IWUSR) ? ft_putchar('w') : ft_putchar('-');
 	(file->stats->st_mode & S_IXUSR) ? ft_putchar('x') : ft_putchar('-');
@@ -35,6 +52,7 @@ static void		print_modes(t_file *file)
 		ft_putchar('T');
 	else
 		(file->stats->st_mode & S_IXOTH) ? ft_putchar('x') : ft_putchar('-');
+	print_aclxattr(file);
 }
 
 static void		print_amtime(t_file *file)
@@ -77,23 +95,7 @@ int		is_special(mode_t mode)
 	return (0);
 }
 
-void	print_aclxattr(t_file *file)
-{
-	acl_t	acl;
-
-	acl = acl_get_link_np(file->path, ACL_TYPE_EXTENDED);
-	if (listxattr(file->path, NULL, 0, XATTR_NOFOLLOW))
-		ft_putchar('@');
-	else if (acl)
-	{
-		ft_putchar('+');
-		acl_free(acl);
-	}
-	else
-		ft_putchar(' ');
-}
-
-void	print_maj_min(struct stat *stats)
+static void		print_maj_min(struct stat *stats)
 {
 	ft_printf("%u,", major(stats->st_rdev));
 	ft_printf("%5u ", minor(stats->st_rdev));
@@ -104,10 +106,7 @@ void	print_lgformat(t_file *file)
 	int		max_link = 2;
 	int		max_size = 6;
 
-
-	print_type(file);
 	print_modes(file);
-	print_aclxattr(file);
 	ft_printf("  %*ld", max_link, (long)file->stats->st_nlink);
 	if (!file->opts->g && !file->opts->n)
 		ft_printf(" %s ", getpwuid(file->stats->st_uid)->pw_name);

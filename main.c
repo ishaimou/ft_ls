@@ -90,7 +90,7 @@ t_file	*init_file(char *name, char *path, t_opt *opts)
 	file->opts = opts;
 	if (!(file->stats = (struct stat*)malloc(sizeof(struct stat))))
 		error_malloc();
-	if (stat(file->path, file->stats) == -1)
+	if (lstat(file->path, file->stats) == -1)
 	{
 		printf("STAT FAILED\n");
 		free(file->stats);

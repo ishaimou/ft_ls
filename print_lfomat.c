@@ -25,7 +25,7 @@ static void		print_aclxattr(t_file *file)
 	acl_t	acl;
 
 	acl = acl_get_link_np(file->path, ACL_TYPE_EXTENDED);
-	if (listxattr(file->path, NULL, 0, XATTR_NOFOLLOW))
+	if (listxattr(file->path, NULL, 0, XATTR_NOFOLLOW) && !errno)
 		ft_putchar('@');
 	else if (acl)
 	{
@@ -102,7 +102,7 @@ int		is_special(mode_t mode)
 
 static void		print_maj_min(t_file *file)
 {
-	ft_printf("   %*u,", file->mw->major, major(file->stats->st_rdev));
+	ft_printf("   %*u, ", file->mw->major, major(file->stats->st_rdev));
 	ft_printf("%*u ", file->mw->minor - 3, minor(file->stats->st_rdev));
 }
 

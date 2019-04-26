@@ -30,6 +30,20 @@ int			ft_cmp_enoent(void *item1, void *item2)
 	return (ft_strcmp(f1->name, f2->name));
 }
 
+int	 parse_default(int i, int ac, t_ls *ls)
+{
+	t_file	*file;
+
+	if (i == ac)
+	{	
+		file = init_file(".", "", &ls->opts);
+		fill_mw(file, &ls->mw);
+		bt_insert_item(&ls->root, file, ft_cmp);
+		return (1);
+	}
+	return (0);
+}
+
 void		parse(int ac, char **av, t_ls *ls)
 {
 	struct stat	*stats;
@@ -41,13 +55,8 @@ void		parse(int ac, char **av, t_ls *ls)
 	init_mw(&ls->mw);
 	while (i < ac && av[i][0] == '-')
 		add_opts(ls, av[i++]);
-	if (i == ac)
-	{
-		file = init_file(".", "", &ls->opts);
-		fill_mw(file, &ls->mw);
-		bt_insert_item(&ls->root, file, ft_cmp);
+	if (parse_default(i, ac, ls))
 		return ;
-	}
 	while (i < ac)
 	{
 		file = init_file(av[i++], "", &ls->opts);

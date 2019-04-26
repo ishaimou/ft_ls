@@ -11,13 +11,15 @@ static int	is_large(t_opt *opts)
 static void	print_orglink(t_file *file)
 {
 	char	*org;
+	int		size;
 
 	if (is_large(file->opts) &&
 		S_ISLNK(file->stats->st_mode))
 	{
+		size = file->stats->st_size;
 		ft_putstr(" -> ");
-		org = ft_strnew(50);
-		readlink(file->path, org, 50);
+		org = ft_strnew(size);
+		readlink(file->path, org, size + 1);
 		ft_putstr(org);
 		free(org);
 	}

@@ -102,32 +102,43 @@ int		is_special(mode_t mode)
 
 static void		print_maj_min(t_file *file)
 {
-	ft_printf("   %*u, ", file->mw->major, major(file->stats->st_rdev));
-	ft_printf("%*u ", file->mw->minor - 3, minor(file->stats->st_rdev));
+	ft_printf("   %*u, ", file->c_mw->major, major(file->stats->st_rdev));
+	ft_printf("%*u ", file->c_mw->minor - 3, minor(file->stats->st_rdev));
+}
+
+void	print_mw(t_max *mw)
+{
+	ft_printf("\nsize: %d\n", mw->size);
+	ft_printf("\nlink: %d\n", mw->link);
+	ft_printf("\nminor: %d\n", mw->minor);
+	ft_printf("\nmajor: %d\n", mw->major);
+	ft_printf("\ngrp: %d\n", mw->grp);
+	ft_printf("\nown: %d\n", mw->own);
 }
 
 void	print_lgformat(t_file *file)
 {
-	if (file->mw->total)
+	//print_mw(file->c_mw);
+	if (file->c_mw->total)
 	{
-		ft_printf("total %d\n", file->mw->total);
-		file->mw->total = 0;
+		ft_printf("total %d\n", file->c_mw->total);
+		file->c_mw->total = 0;
 	}
 	print_modes(file);
-	ft_printf(" %*ld", file->mw->link, (long)file->stats->st_nlink);
+	ft_printf(" %*ld", file->c_mw->link, (long)file->stats->st_nlink);
 	if (!file->opts->g && !file->opts->n)
-		ft_printf(" %-*s ", file->mw->own,
+		ft_printf(" %-*s ", file->c_mw->own,
 					getpwuid(file->stats->st_uid)->pw_name);
 	if (!file->opts->o && !file->opts->n)
-		ft_printf(" %-*s", file->mw->grp,
+		ft_printf(" %-*s ", file->c_mw->grp,
 					getgrgid(file->stats->st_gid)->gr_name);
 	if (file->opts->n && !file->opts->g)
-		ft_printf("%-*ld ", file->mw->nown, file->stats->st_uid);
+		ft_printf("%-*ld ", file->c_mw->nown, file->stats->st_uid);
 	if (file->opts->n && !file->opts->o)
-		ft_printf("%-*ld ", file->mw->ngrp, file->stats->st_gid);
+		ft_printf("%-*ld ", file->c_mw->ngrp, file->stats->st_gid);
 	if (is_special(file->stats->st_mode))
 		print_maj_min(file);
 	else
-		ft_printf(" %*lld ", file->mw->size, (long long)file->stats->st_size);
+		ft_printf(" %*lld ", file->c_mw->size, (long long)file->stats->st_size);
 	print_amtime(file);
 }

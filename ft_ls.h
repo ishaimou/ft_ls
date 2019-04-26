@@ -52,19 +52,21 @@ typedef struct	s_max
 
 typedef struct	s_file
 {
-	t_max		*mw;
 	int			error;
 	t_opt		*opts;
 	char		*name;
 	char		*path;
 	struct stat	*stats;
 	t_bt		*node;
+	t_bt		*dirs;
+	t_max		*c_mw;
+	t_max		*p_mw;
 }				t_file;
 
 typedef struct	s_ls
 {
-	t_opt		opts;
 	t_max		mw;
+	t_opt		opts;
 	t_file		*file;
 	t_bt		*root;
 	t_bt		*invtree;
@@ -78,7 +80,7 @@ void			add_opts(t_ls *ls, char *s);
 int				ft_cmp(void* item1, void *item2);
 void			init_mw(t_max *mw);
 void			init_opts(t_ls *ls);
-void			fill_mw(t_file *file, t_max *mw);
+void			fill_mw(t_max *p_mw, t_file *file);
 t_file			*init_file(char *name, char *path, t_opt *opts);
 
 #endif

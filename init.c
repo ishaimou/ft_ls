@@ -49,6 +49,7 @@ t_file	*init_file(char *name, char *path, t_opt *opts)
 	file->path = set_path(file, path);
 	file->opts = opts;
 	file->node = NULL;
+	file->dirs = NULL;
 	if (!(file->stats = (struct stat*)malloc(sizeof(struct stat))))
 		exit(-1);
 	file->error = (lstat(file->path, file->stats) == -1) ? errno : 0;

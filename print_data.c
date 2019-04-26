@@ -56,11 +56,13 @@ void		rcs_traversal(t_file *file)
 	init_mw(mw);
 	while ((dir = readdir(fluxdir)))
 	{
-		if (ft_strcmp(dir->d_name, ".") && ft_strcmp(dir->d_name, ".."))
+		if (dir->d_name[0] != '.' || file->opts->a ||
+			(file->opts->cap_a && ft_strcmp(dir->d_name, ".") &&
+			ft_strcmp(dir->d_name, "..")))
 		{
 			child_file = init_file(dir->d_name, file->path, file->opts);
 			fill_mw(child_file, mw);
-			if (file->opts->cap_r && S_ISDIR(child_file->stats->st_mode))
+			if (file->opts->cap_r && S_ISDIR(child_file->stats->st_mode) && ft_strcmp(child_file->name, "."))
 				rcs_traversal(child_file);
 			else
 				bt_insert_item(&file->node, child_file, ft_cmp);
@@ -113,12 +115,9 @@ void		print_item(void *item)
 	char			*s2;
 
 	file = (t_file*)item;
-	if (file->name[0] == '.' && !file->opts->a)
-		return ;
 	s1 = (file->opts->p && S_ISDIR(file->stats->st_mode)) ? "/" : "";
 	s2 = (file->opts->m) ? ", " : "\n";
-	if (S_ISDIR(file->stats->st_mode) &&
-		ft_strcmp(file->name, ".") && ft_strcmp(file->name, ".."))
+	if (S_ISDIR(file->stats->st_mode))
 		rcs_traversal(file);
 	else
 	{
@@ -140,8 +139,6 @@ void		print_lvl1(void *item)
 	char			*s2;
 
 	file = (t_file*)item;
-	if (file->name[0] == '.' && !file->opts->a)
-		return ;
 	s1 = (file->opts->p && S_ISDIR(file->stats->st_mode)) ? "/" : "";
 	s2 = (file->opts->m) ? ", " : "\n";
 	if (file->opts->i)

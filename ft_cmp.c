@@ -42,9 +42,9 @@ int			ft_cmp(void* item1, void *item2)
 	f1 = (t_file*)item1;
 	f2 = (t_file*)item2;
 	rev = (f1->opts->r) ? -1 : 1;
-	if (pure_dir(f1) && !pure_dir(f2))
+	if (pure_dir(f1) && !pure_dir(f2) && f1->opts->cap_r)
 		return (rev);
-	if (pure_dir(f2) && !pure_dir(f1))
+	if (pure_dir(f2) && !pure_dir(f1) && f1->opts->cap_r)
 		return (-rev);
 	if (f1->opts->cap_s)
 		ret = ft_cmp_size(f1, f2);

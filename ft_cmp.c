@@ -44,7 +44,7 @@ int			ft_cmp(void* item1, void *item2)
 	rev = (f1->opts->r) ? -1 : 1;
 	if (pure_dir(f1) && !pure_dir(f2))
 		return (rev);
-	if (pure_dir(f2) && !pure_dir(f2))
+	if (pure_dir(f2) && !pure_dir(f1))
 		return (-rev);
 	if (f1->opts->cap_s)
 		ret = ft_cmp_size(f1, f2);

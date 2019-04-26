@@ -38,6 +38,7 @@ typedef struct		s_opt
 
 typedef struct	s_max
 {
+	int			total;
 	int			count;
 	int			link;
 	int			size;

@@ -57,6 +57,7 @@ t_file	*init_file(char *name, char *path, t_opt *opts)
 
 void	init_mw(t_max *mw)
 {
+	mw->total = 0;
 	mw->count = 0;
 	mw->major = 0;
 	mw->minor = 0;

@@ -7,6 +7,7 @@ void		fill_mw(t_file *file, t_max *mw)
 
 	file->mw = mw;
 	mw->count++;
+	mw->total += file->stats->st_blocks;
 	grp = getgrgid(file->stats->st_gid);
 	own = getpwuid(file->stats->st_uid);
 	mw->grp = ft_max(mw->grp, ft_strlen(grp->gr_name));
@@ -78,6 +79,7 @@ int			main(int ac, char **av)
 	bt_apply_infix(ls.root, print_item);
 	//printf("size: %d\n", bt_size_count(ls.root));
 	//printf("level: %d\n", bt_level_count(ls.root));
+	bt_free(&ls.invtree, &freef);
 	bt_free(&ls.root, &freef);
 	return (0);
 }

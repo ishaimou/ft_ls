@@ -23,6 +23,23 @@ static void	print_orglink(t_file *file)
 	}
 }
 
+int			errno_msg(int error)
+{
+	if (error)
+	{
+		if (error == 13)
+			ft_dprintf(2, "ft_ls: Permission denied\n");
+		else if (error == ELOOP)
+			ft_dprintf(2, "ft_ls: Lot of symbolic links\n");
+		else if (error == EFAULT)
+			ft_dprintf(2, "ft_ls: Invalid Address\n");
+		else if (error == ENAMETOOLONG)
+			ft_dprintf(2, "ft_ls: Long Name\n");
+		return (1);
+	}
+	return (0);
+}
+
 void		rcs_traversal(t_file *file)
 {
 	t_max			*mw;
@@ -31,7 +48,10 @@ void		rcs_traversal(t_file *file)
 	DIR				*fluxdir;
 
 	fluxdir = opendir(file->path);
-	(file->mw->count > 1) ? ft_printf("\n%s:\n", file->path) : 0;
+	if (errno_msg(errno))
+		return ;
+	if (file->mw->count > 1)
+		ft_printf("\n%s:\n", file->path);
 	mw = (t_max*)malloc(sizeof(t_max));
 	init_mw(mw);
 	while ((dir = readdir(fluxdir)))
@@ -52,8 +72,7 @@ void		rcs_traversal(t_file *file)
 				print_item : print_lvl1);
 		bt_free(&file->node, &freef);
 	}
-	//else
-	//	free(file->node);
+	free(mw);
 	closedir(fluxdir);
 }
 

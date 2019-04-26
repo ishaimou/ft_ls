@@ -108,6 +108,11 @@ static void		print_maj_min(t_file *file)
 
 void	print_lgformat(t_file *file)
 {
+	if (file->mw->total)
+	{
+		ft_printf("total %d\n", file->mw->total);
+		file->mw->total = 0;
+	}
 	print_modes(file);
 	ft_printf(" %*ld", file->mw->link, (long)file->stats->st_nlink);
 	if (!file->opts->g && !file->opts->n)

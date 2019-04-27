@@ -14,12 +14,12 @@
 
 void			total_destruct(t_file *file)
 {
-	if (is_large(file->opts) && file->c_mw->total != -1)
+	if (is_large(file->opts) && file->p_mw->total != -1)
 	{
 		write(1, "total ", 6);
-		ft_putnbr(file->c_mw->total);
+		ft_putnbr(file->p_mw->total);
 		write(1, "\n", 1);
-		file->c_mw->total = -1;
+		file->p_mw->total = -1;
 	}
 }
 

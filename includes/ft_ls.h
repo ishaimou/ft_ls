@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 14:55:51 by obelouch          #+#    #+#             */
-/*   Updated: 2019/04/27 16:41:17 by ishaimou         ###   ########.fr       */
+/*   Updated: 2019/04/27 19:18:34 by ishaimou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ typedef struct	s_opt
 	int			m:1;
 	int			p:1;
 	int			n:1;
+	int			c:1;
 	int			one:1;
 	int			cap_a:1;
 	int			cap_r:1;

@@ -6,7 +6,7 @@
 /*   By: ishaimou <ishaimou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 16:41:42 by ishaimou          #+#    #+#             */
-/*   Updated: 2019/04/27 16:42:58 by ishaimou         ###   ########.fr       */
+/*   Updated: 2019/04/27 19:47:36 by ishaimou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,19 @@ void		print_name(t_file *file, char *suffix)
 		ft_printf("%{green}%s%s%{eoc}", file->name, suffix);
 }
 
+int			print_column(t_file *file, char *s1)
+{
+	char		*s2;
+
+	if (file->opts->c)
+	{
+		s2 = (--file->c_mw->count % 3 == 0) ? "\n" : "";
+		ft_printf("%-20s%s%s", file->name, s1, s2);
+		return (1);
+	}
+	return (0);
+}
+
 void		print_item(void *item)
 {
 	t_file			*file;
@@ -68,6 +81,8 @@ void		print_item(void *item)
 		ft_printf("%ld ", (long)file->stats->st_ino);
 	if (is_large(file->opts))
 		print_lgformat(file);
+	if (print_column(file, s1))
+		return ;
 	(file->opts->cap_g) ? print_name(file, s1) :
 						ft_printf("%s%s", file->name, s1);
 	print_orglink(file);

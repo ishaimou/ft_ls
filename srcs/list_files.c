@@ -6,31 +6,13 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 15:16:23 by obelouch          #+#    #+#             */
-/*   Updated: 2019/04/27 15:57:38 by ishaimou         ###   ########.fr       */
+/*   Updated: 2019/04/27 16:42:35 by ishaimou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-int			is_dot(char *name)
-{
-	if (!ft_strcmp(name, ".") || !ft_strcmp(name, ".."))
-		return (1);
-	return (0);
-}
-
-int			permis_error(int error)
-{
-	if (error)
-	{
-		perror("ft_ls");
-		errno = 0;
-		return (1);
-	}
-	return (0);
-}
-
-void		lsdir(t_file *file, DIR *fluxdir)
+static void			lsdir(t_file *file, DIR *fluxdir)
 {
 	t_file			*child_file;
 	struct dirent	*dir;
@@ -51,16 +33,16 @@ void		lsdir(t_file *file, DIR *fluxdir)
 	bt_free(&file->node, &freef);
 }
 
-void		lsr(void *arg)
+static void			lsr(void *arg)
 {
-	t_file	*file_dir;
+	t_file			*file_dir;
 
 	file_dir = (t_file*)arg;
 	ft_printf("\n%s:\n", file_dir->path);
 	ft_ls(arg);
 }
 
-void		lsdir_r(t_file *file, DIR *fluxdir)
+static void			lsdir_r(t_file *file, DIR *fluxdir)
 {
 	t_file			*child_file;
 	struct dirent	*dir;
@@ -89,10 +71,10 @@ void		lsdir_r(t_file *file, DIR *fluxdir)
 	bt_free(&file->node, &freef);
 }
 
-void		ft_ls(void *arg)
+void				ft_ls(void *arg)
 {
-	t_file	*file_arg;
-	DIR		*fluxdir;
+	t_file			*file_arg;
+	DIR				*fluxdir;
 
 	file_arg = (t_file*)arg;
 	errno = 0;

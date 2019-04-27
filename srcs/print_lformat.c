@@ -6,69 +6,11 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 15:08:05 by obelouch          #+#    #+#             */
-/*   Updated: 2019/04/27 15:52:38 by ishaimou         ###   ########.fr       */
+/*   Updated: 2019/04/27 16:39:37 by ishaimou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
-
-static void		print_type(t_file *file)
-{
-	if (S_ISBLK(file->stats->st_mode))
-		ft_putchar('b');
-	else if (S_ISCHR(file->stats->st_mode))
-		ft_putchar('c');
-	else if (S_ISDIR(file->stats->st_mode))
-		ft_putchar('d');
-	else if (S_ISFIFO(file->stats->st_mode))
-		ft_putchar('p');
-	else if (S_ISLNK(file->stats->st_mode))
-		ft_putchar('l');
-	else if (S_ISSOCK(file->stats->st_mode))
-		ft_putchar('s');
-	else
-		ft_putchar('-');
-}
-
-static void		print_aclxattr(t_file *file)
-{
-	acl_t	acl;
-
-	acl = acl_get_link_np(file->path, ACL_TYPE_EXTENDED);
-	if (listxattr(file->path, NULL, 0, XATTR_NOFOLLOW) && !errno)
-		ft_putchar('@');
-	else if (acl)
-	{
-		ft_putchar('+');
-		acl_free(acl);
-	}
-	else
-		ft_putchar(' ');
-}
-
-static void		print_modes(t_file *file)
-{
-	print_type(file);
-	(file->stats->st_mode & S_IRUSR) ? ft_putchar('r') : ft_putchar('-');
-	(file->stats->st_mode & S_IWUSR) ? ft_putchar('w') : ft_putchar('-');
-	if (file->stats->st_mode & S_ISUID)
-		ft_putchar('s');
-	else
-		(file->stats->st_mode & S_IXUSR) ? ft_putchar('x') : ft_putchar('-');
-	(file->stats->st_mode & S_IRGRP) ? ft_putchar('r') : ft_putchar('-');
-	(file->stats->st_mode & S_IWGRP) ? ft_putchar('w') : ft_putchar('-');
-	if (file->stats->st_mode & S_ISGID)
-		ft_putchar('s');
-	else
-		(file->stats->st_mode & S_IXGRP) ? ft_putchar('x') : ft_putchar('-');
-	(file->stats->st_mode & S_IROTH) ? ft_putchar('r') : ft_putchar('-');
-	(file->stats->st_mode & S_IWOTH) ? ft_putchar('w') : ft_putchar('-');
-	if (file->stats->st_mode & S_ISVTX)
-		ft_putchar('t');
-	else
-		(file->stats->st_mode & S_IXOTH) ? ft_putchar('x') : ft_putchar('-');
-	print_aclxattr(file);
-}
 
 static void		print_amtime(t_file *file)
 {
@@ -92,16 +34,6 @@ static void		print_amtime(t_file *file)
 	free(str_time);
 	free(date);
 	free(year);
-}
-
-int				is_special(mode_t mode)
-{
-	if (S_ISCHR(mode) ||
-		S_ISBLK(mode) ||
-		S_ISFIFO(mode) ||
-		S_ISSOCK(mode))
-		return (1);
-	return (0);
 }
 
 static void		print_maj_min(t_file *file)

@@ -1,12 +1,16 @@
-#include "ft_ls.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   print_data.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ishaimou <ishaimou@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/04/27 16:41:42 by ishaimou          #+#    #+#             */
+/*   Updated: 2019/04/27 16:42:58 by ishaimou         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-static int	is_large(t_opt *opts)
-{
-	if (opts->l || opts->n ||
-		opts->o || opts->g )
-		return (1);
-	return (0);
-}
+#include "ft_ls.h"
 
 static void	print_orglink(t_file *file)
 {
@@ -29,16 +33,6 @@ void		print_enoent(void *item)
 
 	file = (t_file*)item;
 	ft_dprintf(2, "ft_ls: %s\n", strerror(file->error));
-}
-
-static int	is_exec(t_file *file)
-{
-	if (S_ISREG(file->stats->st_mode) && (
-		(S_IXUSR & file->stats->st_mode) ||
-		(S_IXGRP & file->stats->st_mode) ||
-		(S_IXOTH & file->stats->st_mode)))
-		return (1);
-	return (0);
 }
 
 void		print_name(t_file *file, char *suffix)
@@ -77,6 +71,5 @@ void		print_item(void *item)
 	(file->opts->cap_g) ? print_name(file, s1) :
 						ft_printf("%s%s", file->name, s1);
 	print_orglink(file);
-			
 	ft_putstr((--file->c_mw->count) ? s2 : "\n");
 }

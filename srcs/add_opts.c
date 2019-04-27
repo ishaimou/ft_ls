@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 14:56:56 by obelouch          #+#    #+#             */
-/*   Updated: 2019/04/27 14:57:01 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/04/27 16:17:52 by ishaimou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void			add_opts(t_ls *ls, char *s)
 		{
 			ft_dprintf(2, "ls: illegal option -- %c\n", *s);
 			ft_dprintf(2, "usage: ls [-1lartuiogmpnRSAG] [file ...]\n");
-			exit(-1);
+			exit(1);
 		}
 		(*s == 't') ? set_t(ls) : 0;
 		(*s == 'm') ? set_m(ls) : 0;

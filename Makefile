@@ -6,7 +6,7 @@
 #    By: ishaimou <ishaimou@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/27 13:58:33 by ishaimou          #+#    #+#              #
-#    Updated: 2019/04/27 15:53:48 by ishaimou         ###   ########.fr        #
+#    Updated: 2019/04/27 16:39:37 by ishaimou         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,12 +21,13 @@ LIB = -L./libft -lft
 
 LIBFT_H = ./libft
 
-FT_LS_H = ./include
+FT_LS_H = ./includes
 
 FLAGS = -Wall -Werror -Wextra
 
-SRCS = main.c parse.c add_opts.c init.c list_files.c\
-	   print_data.c print_lformat.c ft_cmp.c freef.c
+SRCS = main.c parse.c add_opts.c init.c \
+	   list_files.c print_data.c print_lformat.c \
+	   ft_cmp.c freef.c tools.c print_modes.c
 SRCS_DIR = $(addprefix srcs/, $(SRCS))
 
 all: $(NAME)

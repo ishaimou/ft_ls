@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 14:55:51 by obelouch          #+#    #+#             */
-/*   Updated: 2019/04/27 15:32:49 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/04/27 16:41:17 by ishaimou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,10 +85,15 @@ typedef struct	s_ls
 	t_bt		*invtree;
 }				t_ls;
 
+int				is_dot(char *name);
+int				is_large(t_opt *opts);
+int				is_exec(t_file *file);
+int				is_special(mode_t mode);
+int				permis_error(int error);
 void			print_enoent(void *item);
 void			print_item(void *item);
-void			print_lvl1(void *item);
 void			print_lgformat(t_file *file);
+void			print_modes(t_file *file);
 void			freef(void **item);
 void			add_opts(t_ls *ls, char *s);
 int				ft_cmp_enoent(void *item1, void *item2);
@@ -98,9 +103,6 @@ void			init_opts(t_ls *ls);
 void			fill_mw(t_max *p_mw, t_file *file);
 t_file			*init_file(char *name, char *path, t_opt *opts);
 void			ft_ls(void *arg);
-void			lsdir_r(t_file *file, DIR *fluxdir);
-void			lsdir(t_file *file, DIR *fluxdir);
-void			lsr(void *arg);
 void			parse(int ac, char **av, t_ls *ls);
 
 #endif

@@ -6,13 +6,13 @@
 /*   By: ishaimou <ishaimou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 14:47:51 by ishaimou          #+#    #+#             */
-/*   Updated: 2019/04/27 15:06:51 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/04/27 16:43:41 by ishaimou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-void		init_opts(t_ls *ls)
+void				init_opts(t_ls *ls)
 {
 	ls->opts.l = 0;
 	ls->opts.a = 0;
@@ -31,7 +31,7 @@ void		init_opts(t_ls *ls)
 	ls->opts.cap_g = 0;
 }
 
-void		init_mw(t_max *mw)
+void				init_mw(t_max *mw)
 {
 	mw->total = 0;
 	mw->count = 0;
@@ -45,7 +45,7 @@ void		init_mw(t_max *mw)
 	mw->ngrp = 0;
 }
 
-void		fill_mw(t_max *p_mw, t_file *file)
+void				fill_mw(t_max *p_mw, t_file *file)
 {
 	struct group	*grp;
 	struct passwd	*own;
@@ -65,12 +65,12 @@ void		fill_mw(t_max *p_mw, t_file *file)
 	p_mw->minor = ft_max(p_mw->minor, ft_intlen(minor(file->stats->st_dev)));
 }
 
-char		*set_path(t_file *file, char *path)
+char				*set_path(t_file *file, char *path)
 {
-	char	*full_path;
-	int		path_len;
-	int		name_len;
-	int		buff_len;
+	char			*full_path;
+	int				path_len;
+	int				name_len;
+	int				buff_len;
 
 	if (!*path)
 		return (ft_strdup(file->name));
@@ -85,9 +85,9 @@ char		*set_path(t_file *file, char *path)
 	return (full_path);
 }
 
-t_file			*init_file(char *name, char *path, t_opt *opts)
+t_file				*init_file(char *name, char *path, t_opt *opts)
 {
-	t_file		*file;
+	t_file			*file;
 
 	if (!(file = (t_file*)malloc(sizeof(t_file))))
 		exit(-1);

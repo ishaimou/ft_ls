@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/04 01:07:21 by obelouch          #+#    #+#             */
-/*   Updated: 2019/04/27 15:12:41 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/04/27 19:03:22 by ishaimou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void				bt_apply_suffix(t_bt *root, void (*applyf)(void *));
 int					bt_size_count(t_bt *root);
 int					bt_level_count(t_bt *root);
 void				bt_free(t_bt **root, void (*freef)(void **));
+void				bt_free_tree(t_bt **root);
 
 int					get_next_line(const int fd, char **line);
 void				ft_printhex(int n);

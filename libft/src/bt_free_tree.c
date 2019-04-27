@@ -1,30 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   freef.c                                            :+:      :+:    :+:   */
+/*   bt_free_tree.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
+/*   By: ishaimou <ishaimou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/27 14:58:10 by obelouch          #+#    #+#             */
-/*   Updated: 2019/04/27 19:11:38 by ishaimou         ###   ########.fr       */
+/*   Created: 2019/04/27 18:59:04 by ishaimou          #+#    #+#             */
+/*   Updated: 2019/04/27 19:03:48 by ishaimou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_ls.h"
+#include "libft.h"
 
-void	freef(void **item)
+void	bt_free_tree(t_bt **root)
 {
-	t_file	*file;
+	t_bt *tmp;
 
-	file = (t_file*)*item;
-	if (!file)
+	tmp = *root;
+	if (!*root)
 		return ;
-	free(file->name);
-	free(file->path);
-	if (file->p_mw)
-		free(file->p_mw);
-	if (file->stats)
-		free(file->stats);
-	free(file);
-	*item = NULL;
+	if (tmp->left)
+		bt_free_tree(&tmp->left);
+	if (tmp->right)
+		bt_free_tree(&tmp->right);
+	free(tmp);
+	*root = NULL;
 }

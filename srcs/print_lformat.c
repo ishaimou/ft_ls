@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 15:08:05 by obelouch          #+#    #+#             */
-/*   Updated: 2019/04/27 16:39:37 by ishaimou         ###   ########.fr       */
+/*   Updated: 2019/04/27 17:58:46 by ishaimou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,10 @@ static void		print_grp_own(t_file *file)
 
 void			print_lgformat(t_file *file)
 {
-	if (file->c_mw->total)
+	if (file->c_mw->total != -1)
 	{
 		ft_printf("total %d\n", file->c_mw->total);
-		file->c_mw->total = 0;
+		file->c_mw->total = -1;
 	}
 	print_modes(file);
 	ft_printf(" %*ld", file->c_mw->link, (long)file->stats->st_nlink);

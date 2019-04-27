@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 15:16:23 by obelouch          #+#    #+#             */
-/*   Updated: 2019/04/27 19:15:10 by ishaimou         ###   ########.fr       */
+/*   Updated: 2019/04/27 20:09:25 by ishaimou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ static void			lsdir(t_file *file, DIR *fluxdir)
 	t_file			*child_file;
 	struct dirent	*dir;
 
-	if (permis_error(errno))
-		return ;
 	while ((dir = readdir(fluxdir)))
 	{
 		if (file->opts->a || (!is_dot(dir->d_name) &&
@@ -49,8 +47,6 @@ static void			lsdir_r(t_file *file, DIR *fluxdir)
 	t_file			*child_file;
 	struct dirent	*dir;
 
-	if (permis_error(errno))
-		return ;
 	while ((dir = readdir(fluxdir)))
 		if (file->opts->a || (!is_dot(dir->d_name) &&
 					(dir->d_name[0] != '.' || file->opts->cap_a)))
@@ -81,6 +77,8 @@ void				ft_ls(void *arg)
 	if (S_ISDIR(file_arg->stats->st_mode))
 	{
 		fluxdir = opendir(file_arg->path);
+		if (permis_error(errno))
+			return ;
 		file_arg->p_mw = (t_max*)malloc(sizeof(t_max));
 		init_mw(file_arg->p_mw);
 		(file_arg->opts->cap_r) ? lsdir_r(file_arg, fluxdir)

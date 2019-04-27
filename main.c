@@ -8,10 +8,10 @@ void		fill_mw(t_max *p_mw, t_file *file)
 	file->c_mw = p_mw;
 	p_mw->count++;
 	p_mw->total += file->stats->st_blocks;
-	grp = getgrgid(file->stats->st_gid);
-	own = getpwuid(file->stats->st_uid);
-	p_mw->grp = ft_max(p_mw->grp, ft_strlen(grp->gr_name));
-	p_mw->own = ft_max(p_mw->own, ft_strlen(own->pw_name));
+	if ((grp = getgrgid(file->stats->st_gid)))
+		p_mw->grp = ft_max(p_mw->grp, ft_strlen(grp->gr_name));
+	if ((own = getpwuid(file->stats->st_uid)))
+		p_mw->own = ft_max(p_mw->own, ft_strlen(own->pw_name));
 	p_mw->ngrp = ft_max(p_mw->ngrp, ft_intlen(file->stats->st_gid));
 	p_mw->nown = ft_max(p_mw->nown, ft_intlen(file->stats->st_uid));
 	p_mw->size = ft_max(p_mw->size, ft_intlen(file->stats->st_size));

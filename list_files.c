@@ -95,8 +95,8 @@ void		ft_ls(void *arg)
 	file_arg = (t_file*)arg;
 	errno = 0;
 	if (S_ISDIR(file_arg->stats->st_mode))
-			(file_arg->opts->cap_r) ? lsdir_r(file_arg)
-									: lsdir(file_arg);
+		(file_arg->opts->cap_r) ? lsdir_r(file_arg)
+								: lsdir(file_arg);
 	else
 		print_item((void*)file_arg);
 }

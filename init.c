@@ -76,7 +76,8 @@ t_file	*init_file(char *name, char *path, t_opt *opts)
 	file->dirs = NULL;
 	if (!(file->stats = (struct stat*)malloc(sizeof(struct stat))))
 		exit(-1);
-	file->error = (lstat(file->path, file->stats) == -1) ? errno : 0;
+	lstat(file->path, file->stats);
+	file->error = errno;
 	errno = 0;
 	return (file);
 }
@@ -91,4 +92,6 @@ void	init_mw(t_max *mw)
 	mw->link = 1;
 	mw->own = 0;
 	mw->grp = 0;
+	mw->nown = 0;
+	mw->ngrp = 0;
 }

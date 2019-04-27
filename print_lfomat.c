@@ -106,39 +106,48 @@ static void		print_maj_min(t_file *file)
 	ft_printf("%*u ", file->c_mw->minor - 3, minor(file->stats->st_rdev));
 }
 
-void	print_mw(t_max *mw)
+static void		print_grp_own(t_file *file)
 {
-	ft_printf("\nsize: %d\n", mw->size);
-	ft_printf("link: %d\n", mw->link);
-	ft_printf("minor: %d\n", mw->minor);
-	ft_printf("major: %d\n", mw->major);
-	ft_printf("grp: %d\n", mw->grp);
-	ft_printf("own: %d\n", mw->own);
+	struct passwd	*pwd;
+	struct group	*grp;
+	
+	pwd = getpwuid(file->stats->st_uid);
+	grp = getgrgid(file->stats->st_gid);
+	if (!file->opts->g && !file->opts->n)
+	{
+		if (pwd)
+			ft_printf(" %-*s ", file->c_mw->own, pwd->pw_name);
+		else
+			ft_printf(" %-*d ", file->c_mw->own, file->stats->st_uid);
+	}
+	if (!file->opts->o && !file->opts->n)
+	{
+		if (grp)
+			ft_printf(" %-*s ", file->c_mw->grp, grp->gr_name);
+		else
+			ft_printf(" %-*d ", file->c_mw->grp, file->stats->st_gid);
+	}
+	if (file->opts->n && !file->opts->g)
+		ft_printf("%-*ld ", file->c_mw->nown, file->stats->st_uid);
+	if (file->opts->n && !file->opts->o)
+		ft_printf("%-*ld ", file->c_mw->ngrp, file->stats->st_gid);
 }
 
-void	print_lgformat(t_file *file)
+void			print_lgformat(t_file *file)
 {
-	//print_mw(file->c_mw);
 	if (file->c_mw->total)
 	{
 		ft_printf("total %d\n", file->c_mw->total);
 		file->c_mw->total = 0;
 	}
 	print_modes(file);
-	ft_printf(" %*ld", file->c_mw->link, (long)file->stats->st_nlink);
-	if (!file->opts->g && !file->opts->n)
-		ft_printf(" %-*s ", file->c_mw->own,
-					getpwuid(file->stats->st_uid)->pw_name);
-	if (!file->opts->o && !file->opts->n)
-		ft_printf(" %-*s ", file->c_mw->grp,
-					getgrgid(file->stats->st_gid)->gr_name);
-	if (file->opts->n && !file->opts->g)
-		ft_printf("%-*ld ", file->c_mw->nown, file->stats->st_uid);
-	if (file->opts->n && !file->opts->o)
-		ft_printf("%-*ld ", file->c_mw->ngrp, file->stats->st_gid);
+	ft_printf(" %*ld", file->c_mw->link,
+				(long)file->stats->st_nlink);
+	print_grp_own(file);
 	if (is_special(file->stats->st_mode))
 		print_maj_min(file);
 	else
-		ft_printf(" %*lld ", file->c_mw->size, (long long)file->stats->st_size);
+		ft_printf(" %*lld ", file->c_mw->size,
+				(long long)file->stats->st_size);
 	print_amtime(file);
 }

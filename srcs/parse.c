@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 15:27:06 by obelouch          #+#    #+#             */
-/*   Updated: 2019/04/27 15:28:13 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/04/27 15:58:37 by ishaimou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ static int	parse_default(int i, int ac, t_ls *ls)
 
 void		parse(int ac, char **av, t_ls *ls)
 {
-	struct stat	*stats;
 	t_file		*file;
 	int			i;
 

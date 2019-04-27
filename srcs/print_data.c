@@ -11,7 +11,6 @@ static int	is_large(t_opt *opts)
 static void	print_orglink(t_file *file)
 {
 	char	*buff;
-	int		size;
 
 	if (is_large(file->opts) &&
 		S_ISLNK(file->stats->st_mode))

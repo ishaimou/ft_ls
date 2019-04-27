@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 14:59:00 by obelouch          #+#    #+#             */
-/*   Updated: 2019/04/27 14:59:34 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/04/27 15:53:34 by ishaimou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,17 @@ static int	ft_cmp_size(t_file *f1, t_file *f2)
 
 static int	ft_cmp_time(t_file *f1, t_file *f2)
 {
-	if (f1->opts->t)
-	{
-		if (f1->stats->st_mtime == f2->stats->st_mtime)
-			return (ft_strcmp(f1->name, f2->name));
-		return (f1->stats->st_mtime < f2->stats->st_mtime ? 1 : -1);
-	}
-	else
+	if (f1->opts->u)
 	{
 		if (f1->stats->st_atime == f2->stats->st_atime)
 			return (ft_strcmp(f1->name, f2->name));
 		return (f1->stats->st_atime < f2->stats->st_atime ? 1 : -1);
+	}
+	else
+	{
+		if (f1->stats->st_mtime == f2->stats->st_mtime)
+			return (ft_strcmp(f1->name, f2->name));
+		return (f1->stats->st_mtime < f2->stats->st_mtime ? 1 : -1);
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 15:08:05 by obelouch          #+#    #+#             */
-/*   Updated: 2019/04/27 15:10:53 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/04/27 15:52:38 by ishaimou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,16 +78,16 @@ static void		print_amtime(t_file *file)
 	char	*str_time;
 	int		tmp;
 
-	if (file->opts->t)
-		am_time = ctime(&file->stats->st_mtime);
-	else
+	if (file->opts->u)
 		am_time = ctime(&file->stats->st_atime);
+	else
+		am_time = ctime(&file->stats->st_mtime);
 	year = ft_strndup(am_time + 20, 4);
 	date = ft_strndup(am_time + 4, 6);
 	str_time = ft_strndup(am_time + 11, 5);
 	ft_printf("%6s ", date);
-	tmp = ABS(time(NULL) - ((file->opts->t) ?
-			file->stats->st_mtime : file->stats->st_atime));
+	tmp = ABS(time(NULL) - ((file->opts->u) ?
+			file->stats->st_atime : file->stats->st_mtime));
 	ft_printf("%5s ", (tmp > 15552000) ? year : str_time);
 	free(str_time);
 	free(date);

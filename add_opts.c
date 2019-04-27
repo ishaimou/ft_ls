@@ -1,12 +1,5 @@
 #include "ft_ls.h"
 
-static void		ft_usage(char c)
-{
-	ft_dprintf(2, "ls: illegal option -- %c\n", c);
-	ft_dprintf(2, "usage: ls [-1lartuiogmpnRSAG] [file ...]\n");
-	exit(-1);
-}
-
 static void		set_m(t_ls *ls)
 {
 	ls->opts.m = 1;
@@ -36,7 +29,11 @@ void			add_opts(t_ls *ls, char *s)
 	while (*(++s))
 	{
 		if (!ft_strchr("1lartuiogmpnRSAG", *s))
-			ft_usage(*s);
+		{
+			ft_dprintf(2, "ls: illegal option -- %c\n", c);
+			ft_dprintf(2, "usage: ls [-1lartuiogmpnRSAG] [file ...]\n");
+			exit(-1);
+		}
 		(*s == 't') ? set_t(ls) : 0;
 		(*s == 'm') ? set_m(ls) : 0;
 		(*s == '1') ? ls->opts.l = 0 : 0;

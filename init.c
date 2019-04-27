@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ishaimou <ishaimou@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/04/27 14:47:51 by ishaimou          #+#    #+#             */
+/*   Updated: 2019/04/27 14:47:58 by ishaimou         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ls.h"
 
 void	init_opts(t_ls *ls)
@@ -17,6 +29,40 @@ void	init_opts(t_ls *ls)
 	ls->opts.cap_s = 0;
 	ls->opts.cap_a = 0;
 	ls->opts.cap_g = 0;
+}
+
+void	init_mw(t_max *mw)
+{
+	mw->total = 0;
+	mw->count = 0;
+	mw->major = 0;
+	mw->minor = 0;
+	mw->size = 1;
+	mw->link = 1;
+	mw->own = 0;
+	mw->grp = 0;
+	mw->nown = 0;
+	mw->ngrp = 0;
+}
+
+void		fill_mw(t_max *p_mw, t_file *file)
+{
+	struct group	*grp;
+	struct passwd	*own;
+
+	file->c_mw = p_mw;
+	p_mw->count++;
+	p_mw->total += file->stats->st_blocks;
+	if ((grp = getgrgid(file->stats->st_gid)))
+		p_mw->grp = ft_max(p_mw->grp, ft_strlen(grp->gr_name));
+	if ((own = getpwuid(file->stats->st_uid)))
+		p_mw->own = ft_max(p_mw->own, ft_strlen(own->pw_name));
+	p_mw->ngrp = ft_max(p_mw->ngrp, ft_intlen(file->stats->st_gid));
+	p_mw->nown = ft_max(p_mw->nown, ft_intlen(file->stats->st_uid));
+	p_mw->size = ft_max(p_mw->size, ft_intlen(file->stats->st_size));
+	p_mw->link = ft_max(p_mw->link, ft_intlen(file->stats->st_nlink));
+	p_mw->major = ft_max(p_mw->major, ft_intlen(major(file->stats->st_dev)));
+	p_mw->minor = ft_max(p_mw->minor, ft_intlen(minor(file->stats->st_dev)));
 }
 
 char		*set_path(t_file *file, char *path)
@@ -39,29 +85,6 @@ char		*set_path(t_file *file, char *path)
 	return (full_path);
 }
 
-t_opt 	*ft_options(t_opt *opts)
-{
-	t_opt	*new_opts;
-
-	new_opts = (t_opt*)malloc(sizeof(t_opt));
-	new_opts->l = opts->l;
-	new_opts->a = opts->a;
-	new_opts->r = opts->r;
-	new_opts->t = opts->t;
-	new_opts->i = opts->i;
-	new_opts->o = opts->o;
-	new_opts->g = opts->g;
-	new_opts->m = opts->m;
-	new_opts->n = opts->n;
-	new_opts->p = opts->p;
-	new_opts->u = opts->u;
-	new_opts->cap_r = opts->cap_r;
-	new_opts->cap_s = opts->cap_s;
-	new_opts->cap_a = opts->cap_a;
-	new_opts->cap_g = opts->cap_g;
-	return (new_opts);
-}
-
 t_file	*init_file(char *name, char *path, t_opt *opts)
 {
 	t_file		*file;
@@ -70,7 +93,6 @@ t_file	*init_file(char *name, char *path, t_opt *opts)
 		exit(-1);
 	file->name = ft_strdup(name);
 	file->path = set_path(file, path);
-	//file->opts = ft_options(opts);
 	file->opts = opts;
 	file->node = NULL;
 	file->dirs = NULL;
@@ -80,18 +102,4 @@ t_file	*init_file(char *name, char *path, t_opt *opts)
 	file->error = errno;
 	errno = 0;
 	return (file);
-}
-
-void	init_mw(t_max *mw)
-{
-	mw->total = 0;
-	mw->count = 0;
-	mw->major = 0;
-	mw->minor = 0;
-	mw->size = 1;
-	mw->link = 1;
-	mw->own = 0;
-	mw->grp = 0;
-	mw->nown = 0;
-	mw->ngrp = 0;
 }

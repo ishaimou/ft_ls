@@ -32,6 +32,16 @@ int			pure_dir(t_file *f)
 	return (0);
 }
 
+int			ft_cmp_enoent(void *item1, void *item2)
+{
+	t_file	*f1;
+	t_file	*f2;
+
+	f1 = (t_file*)item1;
+	f2 = (t_file*)item2;
+	return (ft_strcmp(f1->name, f2->name));
+}
+
 int			ft_cmp(void* item1, void *item2)
 {
 	t_file	*f1;

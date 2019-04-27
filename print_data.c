@@ -24,6 +24,14 @@ static void	print_orglink(t_file *file)
 	}
 }
 
+void		print_enoent(void *item)
+{
+	t_file	*file;
+
+	file = (t_file*)item;
+	ft_dprintf(2, "ft_ls: %s\n", strerror(file->error));
+}
+
 static int	is_exec(t_file *file)
 {
 	if (S_ISREG(file->stats->st_mode) && (

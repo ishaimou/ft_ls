@@ -39,6 +39,29 @@ char		*set_path(t_file *file, char *path)
 	return (full_path);
 }
 
+t_opt 	*ft_options(t_opt *opts)
+{
+	t_opt	*new_opts;
+
+	new_opts = (t_opt*)malloc(sizeof(t_opt));
+	new_opts->l = opts->l;
+	new_opts->a = opts->a;
+	new_opts->r = opts->r;
+	new_opts->t = opts->t;
+	new_opts->i = opts->i;
+	new_opts->o = opts->o;
+	new_opts->g = opts->g;
+	new_opts->m = opts->m;
+	new_opts->n = opts->n;
+	new_opts->p = opts->p;
+	new_opts->u = opts->u;
+	new_opts->cap_r = opts->cap_r;
+	new_opts->cap_s = opts->cap_s;
+	new_opts->cap_a = opts->cap_a;
+	new_opts->cap_g = opts->cap_g;
+	return (new_opts);
+}
+
 t_file	*init_file(char *name, char *path, t_opt *opts)
 {
 	t_file		*file;
@@ -47,6 +70,7 @@ t_file	*init_file(char *name, char *path, t_opt *opts)
 		exit(-1);
 	file->name = ft_strdup(name);
 	file->path = set_path(file, path);
+	//file->opts = ft_options(opts);
 	file->opts = opts;
 	file->node = NULL;
 	file->dirs = NULL;

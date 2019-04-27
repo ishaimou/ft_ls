@@ -76,23 +76,6 @@ void		print_enoent(void *item)
 	ft_dprintf(2, "ft_ls: %s: No such file or directory\n", file->name);
 }
 
-int			errno_msg(int error)
-{
-	if (error)
-	{
-		if (error == 13)
-			ft_dprintf(2, "ft_ls: Permission denied\n");
-		else if (error == ELOOP)
-			ft_dprintf(2, "ft_ls: Lot of symbolic links\n");
-		else if (error == EFAULT)
-			ft_dprintf(2, "ft_ls: Invalid Address\n");
-		else if (error == ENAMETOOLONG)
-			ft_dprintf(2, "ft_ls: Long Name\n");
-		return (1);
-	}
-	return (0);
-}
-
 void			ft_ls(void *arg);
 
 void			lsdir(t_file *file)
@@ -104,8 +87,11 @@ void			lsdir(t_file *file)
 	file->p_mw = (t_max*)malloc(sizeof(t_max));
 	init_mw(file->p_mw);
 	fluxdir = opendir(file->path);
-	if (errno_msg(errno))
+	if (errno == 13)
+	{
+		ft_dprintf(2, "ft_ls: Permission denied\n");
 		return ;
+	}
 	while ((dir = readdir(fluxdir)))
 	{
 		if (dir->d_name[0] != '.')
@@ -134,14 +120,15 @@ void			lsdir_r(t_file *file)
 	DIR				*fluxdir;
 	t_file			*child_file;
 	struct dirent	*dir;
-	struct dirent	*dir2;
-	t_max			*mw;
 
 	file->p_mw = (t_max*)malloc(sizeof(t_max));
 	init_mw(file->p_mw);
 	fluxdir = opendir(file->path);
-	if (errno_msg(errno))
+	if (errno == 13)
+	{
+		ft_dprintf(2, "ft_ls: Permission denied\n");
 		return ;
+	}
 	while ((dir = readdir(fluxdir)))
 	{
 		if (dir->d_name[0] != '.')
@@ -159,20 +146,8 @@ void			lsdir_r(t_file *file)
 	bt_apply_infix(file->node, print_item);
 	bt_apply_infix(file->dirs, lsr);
 	bt_free(&file->node, &freef);
-	//bt_free(&file->dirs, &freef);
+	free(file->dirs);                 //!!!!!!!!!!!!!!!!!!!!!!!!
 	closedir(fluxdir);
-	/*fluxdir = opendir(file->path);
-	while ((dir2 = readdir(fluxdir)))
-	{
-		if (dir2->d_name[0] != '.' && dir2->d_type == DT_DIR)
-		{
-			child_file = init_file(dir2->d_name, file->path, file->opts);
-			fill_mw(file->p_mw, child_file);
-			ft_printf("\nrecursive: %s:\n", dir2->d_name);
-			ft_ls(child_file);
-		}
-	}
-	closedir(fluxdir);*/
 }
 
 void		ft_ls(void *arg)
@@ -180,6 +155,7 @@ void		ft_ls(void *arg)
 	t_file		*file_arg;
 
 	file_arg = (t_file*)arg;
+	errno = 0;
 	if (S_ISDIR(file_arg->stats->st_mode))
 	{
 		//if (file_arg->opts->a)

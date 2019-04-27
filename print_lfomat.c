@@ -109,11 +109,11 @@ static void		print_maj_min(t_file *file)
 void	print_mw(t_max *mw)
 {
 	ft_printf("\nsize: %d\n", mw->size);
-	ft_printf("\nlink: %d\n", mw->link);
-	ft_printf("\nminor: %d\n", mw->minor);
-	ft_printf("\nmajor: %d\n", mw->major);
-	ft_printf("\ngrp: %d\n", mw->grp);
-	ft_printf("\nown: %d\n", mw->own);
+	ft_printf("link: %d\n", mw->link);
+	ft_printf("minor: %d\n", mw->minor);
+	ft_printf("major: %d\n", mw->major);
+	ft_printf("grp: %d\n", mw->grp);
+	ft_printf("own: %d\n", mw->own);
 }
 
 void	print_lgformat(t_file *file)

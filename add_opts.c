@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   add_opts.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/04/27 14:56:56 by obelouch          #+#    #+#             */
+/*   Updated: 2019/04/27 14:57:01 by obelouch         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ls.h"
 
 static void		set_m(t_ls *ls)
@@ -30,7 +42,7 @@ void			add_opts(t_ls *ls, char *s)
 	{
 		if (!ft_strchr("1lartuiogmpnRSAG", *s))
 		{
-			ft_dprintf(2, "ls: illegal option -- %c\n", c);
+			ft_dprintf(2, "ls: illegal option -- %c\n", *s);
 			ft_dprintf(2, "usage: ls [-1lartuiogmpnRSAG] [file ...]\n");
 			exit(-1);
 		}

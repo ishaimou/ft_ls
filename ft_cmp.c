@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_cmp.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/04/27 14:59:00 by obelouch          #+#    #+#             */
+/*   Updated: 2019/04/27 14:59:34 by obelouch         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ls.h"
 
 static int	ft_cmp_size(t_file *f1, t_file *f2)
@@ -42,13 +54,13 @@ int			ft_cmp_enoent(void *item1, void *item2)
 	return (ft_strcmp(f1->name, f2->name));
 }
 
-int			ft_cmp(void* item1, void *item2)
+int			ft_cmp(void *item1, void *item2)
 {
 	t_file	*f1;
 	t_file	*f2;
 	int		rev;
 	int		ret;
-	
+
 	f1 = (t_file*)item1;
 	f2 = (t_file*)item2;
 	rev = (f1->opts->r) ? -1 : 1;

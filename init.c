@@ -6,13 +6,13 @@
 /*   By: ishaimou <ishaimou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 14:47:51 by ishaimou          #+#    #+#             */
-/*   Updated: 2019/04/27 14:47:58 by ishaimou         ###   ########.fr       */
+/*   Updated: 2019/04/27 15:06:51 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-void	init_opts(t_ls *ls)
+void		init_opts(t_ls *ls)
 {
 	ls->opts.l = 0;
 	ls->opts.a = 0;
@@ -31,7 +31,7 @@ void	init_opts(t_ls *ls)
 	ls->opts.cap_g = 0;
 }
 
-void	init_mw(t_max *mw)
+void		init_mw(t_max *mw)
 {
 	mw->total = 0;
 	mw->count = 0;
@@ -85,7 +85,7 @@ char		*set_path(t_file *file, char *path)
 	return (full_path);
 }
 
-t_file	*init_file(char *name, char *path, t_opt *opts)
+t_file			*init_file(char *name, char *path, t_opt *opts)
 {
 	t_file		*file;
 

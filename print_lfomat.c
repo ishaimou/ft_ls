@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   print_lfomat.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/04/27 15:08:05 by obelouch          #+#    #+#             */
+/*   Updated: 2019/04/27 15:10:53 by obelouch         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ls.h"
 
 static void		print_type(t_file *file)
@@ -14,8 +26,6 @@ static void		print_type(t_file *file)
 		ft_putchar('l');
 	else if (S_ISSOCK(file->stats->st_mode))
 		ft_putchar('s');
-	else if (S_ISREG(file->stats->st_mode))
-		ft_putchar('-');
 	else
 		ft_putchar('-');
 }
@@ -65,8 +75,6 @@ static void		print_amtime(t_file *file)
 	char	*am_time;
 	char	*year;
 	char	*date;
-//	char	*month;
-//	char	*day;
 	char	*str_time;
 	int		tmp;
 
@@ -75,8 +83,6 @@ static void		print_amtime(t_file *file)
 	else
 		am_time = ctime(&file->stats->st_atime);
 	year = ft_strndup(am_time + 20, 4);
-	//month = ft_strndup(am_time + 4, 3);
-	//day = ft_strndup(am_time + 8, 2);
 	date = ft_strndup(am_time + 4, 6);
 	str_time = ft_strndup(am_time + 11, 5);
 	ft_printf("%6s ", date);
@@ -85,12 +91,10 @@ static void		print_amtime(t_file *file)
 	ft_printf("%5s ", (tmp > 15552000) ? year : str_time);
 	free(str_time);
 	free(date);
-	//free(day);
-	//free(month);
 	free(year);
 }
 
-int		is_special(mode_t mode)
+int				is_special(mode_t mode)
 {
 	if (S_ISCHR(mode) ||
 		S_ISBLK(mode) ||
@@ -110,22 +114,18 @@ static void		print_grp_own(t_file *file)
 {
 	struct passwd	*pwd;
 	struct group	*grp;
-	
+
 	pwd = getpwuid(file->stats->st_uid);
 	grp = getgrgid(file->stats->st_gid);
 	if (!file->opts->g && !file->opts->n)
 	{
-		if (pwd)
-			ft_printf(" %-*s ", file->c_mw->own, pwd->pw_name);
-		else
-			ft_printf(" %-*d ", file->c_mw->own, file->stats->st_uid);
+		(pwd) ? ft_printf(" %-*s ", file->c_mw->own, pwd->pw_name)
+			: ft_printf(" %-*d ", file->c_mw->own, file->stats->st_uid);
 	}
 	if (!file->opts->o && !file->opts->n)
 	{
-		if (grp)
-			ft_printf(" %-*s ", file->c_mw->grp, grp->gr_name);
-		else
-			ft_printf(" %-*d ", file->c_mw->grp, file->stats->st_gid);
+		(grp) ? ft_printf(" %-*s ", file->c_mw->grp, grp->gr_name)
+			: ft_printf(" %-*d ", file->c_mw->grp, file->stats->st_gid);
 	}
 	if (file->opts->n && !file->opts->g)
 		ft_printf("%-*ld ", file->c_mw->nown, file->stats->st_uid);
@@ -141,8 +141,7 @@ void			print_lgformat(t_file *file)
 		file->c_mw->total = 0;
 	}
 	print_modes(file);
-	ft_printf(" %*ld", file->c_mw->link,
-				(long)file->stats->st_nlink);
+	ft_printf(" %*ld", file->c_mw->link, (long)file->stats->st_nlink);
 	print_grp_own(file);
 	if (is_special(file->stats->st_mode))
 		print_maj_min(file);

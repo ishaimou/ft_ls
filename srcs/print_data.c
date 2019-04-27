@@ -32,7 +32,7 @@ void		print_enoent(void *item)
 	t_file	*file;
 
 	file = (t_file*)item;
-	ft_dprintf(2, "ft_ls: %s\n", strerror(file->error));
+	ft_dprintf(2, "ft_ls: %s: %s\n", file->name, strerror(file->error));
 }
 
 void		print_name(t_file *file, char *suffix)

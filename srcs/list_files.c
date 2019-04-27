@@ -76,6 +76,11 @@ void				ft_ls(void *arg)
 	errno = 0;
 	if (S_ISDIR(file_arg->stats->st_mode))
 	{
+		if (file_arg->c_mw->total != -1 && is_large(file_arg->opts))
+		{
+			ft_printf("total %d\n", file_arg->c_mw->total);
+			file_arg->c_mw->total = -1;
+		}
 		fluxdir = opendir(file_arg->path);
 		if (permis_error(errno))
 			return ;
@@ -87,5 +92,4 @@ void				ft_ls(void *arg)
 	}
 	else
 		print_item((void*)file_arg);
-	
 }

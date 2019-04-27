@@ -99,6 +99,7 @@ void			freef(void **item);
 void			add_opts(t_ls *ls, char *s);
 int				ft_cmp_enoent(void *item1, void *item2);
 int				ft_cmp(void *item1, void *item2);
+int				ft_cmp_arg(void *item1, void *item2);
 void			init_mw(t_max *mw);
 void			init_opts(t_ls *ls);
 void			fill_mw(t_max *p_mw, t_file *file);

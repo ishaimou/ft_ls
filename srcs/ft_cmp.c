@@ -63,3 +63,34 @@ int			ft_cmp(void *item1, void *item2)
 		ret = ft_strcmp(f1->name, f2->name);
 	return (ret * rev);
 }
+
+int			pure_dir(t_file *file)
+{
+	if (!is_dot(file->name) &&
+		S_ISDIR(file->stats->st_mode))
+		return (1);
+	return (0);
+}
+
+int			ft_cmp_arg(void *item1, void *item2)
+{
+	t_file	*f1;
+	t_file	*f2;
+	int		rev;
+	int		ret;
+
+	f1 = (t_file*)item1;
+	f2 = (t_file*)item2;
+	rev = (f1->opts->r) ? -1 : 1;
+	if (pure_dir(f1) && !pure_dir(f2))
+		return (rev);
+	if (!pure_dir(f1) && pure_dir(f2))
+		return (-rev);
+	if (f1->opts->cap_s)
+		ret = ft_cmp_size(f1, f2);
+	else if (f1->opts->t)
+		ret = ft_cmp_time(f1, f2);
+	else
+		ret = ft_strcmp(f1->name, f2->name);
+	return (ret * rev);
+}

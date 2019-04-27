@@ -46,7 +46,7 @@ void		parse(int ac, char **av, t_ls *ls)
 		else
 		{
 			fill_mw(&ls->mw, file);
-			bt_insert_item(&ls->root, file, ft_cmp);
+			bt_insert_item(&ls->root, file, ft_cmp_arg);
 		}
 	}
 }

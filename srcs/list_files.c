@@ -12,7 +12,7 @@
 
 #include "ft_ls.h"
 
-static void			total_destruct(t_file *file)
+void			total_destruct(t_file *file)
 {
 	if (is_large(file->opts) && file->c_mw->total != -1)
 	{
@@ -36,7 +36,7 @@ static void			lsdir(t_file *file, DIR *fluxdir)
 			fill_mw(file->p_mw, child_file);
 			bt_insert_item(&file->node, child_file, ft_cmp);
 		}
-	total_destruct(child_file);
+	total_destruct(file);
 	bt_apply_infix(file->node, print_item);
 	bt_free(&file->node, &freef);
 }
@@ -71,7 +71,7 @@ static void			lsdir_r(t_file *file, DIR *fluxdir)
 			}
 			bt_insert_item(&file->node, child_file, ft_cmp);
 		}
-	total_destruct(child_file);
+	total_destruct(file);
 	bt_apply_infix(file->node, print_item);
 	if (file->dirs)
 		bt_apply_infix(file->dirs, lsr);

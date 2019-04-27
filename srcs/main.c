@@ -25,6 +25,8 @@ static void		ls_arg(void *item)
 			(*(file->nbr_reg))++;
 		ft_printf("%s:\n", file->name);
 	}
+	if (*(file->nbr_dir) == 1 && *(file->nbr_reg) > 0 && !S_ISREG(file->stats->st_mode))
+		ft_printf("\n%s:\n", file->name);
 	ft_ls(item);
 }
 

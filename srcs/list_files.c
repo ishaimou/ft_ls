@@ -6,11 +6,22 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 15:16:23 by obelouch          #+#    #+#             */
-/*   Updated: 2019/04/28 08:45:46 by ishaimou         ###   ########.fr       */
+/*   Updated: 2019/04/28 10:17:58 by ishaimou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
+
+static void			total_destruct(t_file *file)
+{
+	if (is_large(file->opts) && file->c_mw->total != -1)
+	{
+		write(1, "total ", 6);
+		ft_putnbr(file->c_mw->total);
+		write(1, "\n", 1);
+		file->c_mw->total = -1;
+	}
+}
 
 static void			lsdir(t_file *file, DIR *fluxdir)
 {
@@ -27,6 +38,7 @@ static void			lsdir(t_file *file, DIR *fluxdir)
 			bt_insert_item(&file->node, child_file, ft_cmp);
 		}
 	}
+	total_destruct(child_file);
 	bt_apply_infix(file->node, print_item);
 	bt_free(&file->node, &freef);
 }
@@ -36,9 +48,10 @@ static void			lsr(void *arg)
 	t_file			*file_dir;
 
 	file_dir = (t_file*)arg;
+	ft_printf("\n%s:\n", file_dir->path);
+	total_destruct(file_dir);
 	free(file_dir->p_mw);
 	file_dir->p_mw = NULL;
-	ft_printf("\n%s:\n", file_dir->path);
 	ft_ls(arg);
 }
 
@@ -60,6 +73,7 @@ static void			lsdir_r(t_file *file, DIR *fluxdir)
 			}
 			bt_insert_item(&file->node, child_file, ft_cmp);
 		}
+	total_destruct(child_file);
 	bt_apply_infix(file->node, print_item);
 	if (file->dirs)
 		bt_apply_infix(file->dirs, lsr);

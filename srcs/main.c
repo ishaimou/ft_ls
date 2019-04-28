@@ -6,7 +6,7 @@
 /*   By: ishaimou <ishaimou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 14:47:50 by ishaimou          #+#    #+#             */
-/*   Updated: 2019/04/28 08:34:18 by ishaimou         ###   ########.fr       */
+/*   Updated: 2019/04/28 10:30:54 by ishaimou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,16 @@
 static void		ls_arg(void *item)
 {
 	t_file	*file;
-	int		is_dir;
 
 	file = (t_file*)item;
-	is_dir = (S_ISDIR(file->stats->st_mode)) ? 1 : 0;
-	if (!is_dir)
-		(*(file->ac))++;
-	if (*(file->ac) > 1 && is_dir)
-		ft_printf("\n%s:\n", file->name);
+	if (*(file->nbr_dir) > 1 && !S_ISREG(file->stats->st_mode))
+	{
+		if (*(file->nbr_reg))
+			ft_putchar('\n');
+		else
+			(*(file->nbr_reg))++;
+		ft_printf("%s:\n", file->name);
+	}
 	ft_ls(item);
 }
 

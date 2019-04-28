@@ -6,7 +6,7 @@
 /*   By: ishaimou <ishaimou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 16:41:42 by ishaimou          #+#    #+#             */
-/*   Updated: 2019/04/28 07:30:25 by ishaimou         ###   ########.fr       */
+/*   Updated: 2019/04/28 10:31:02 by ishaimou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	print_orglink(t_file *file)
 	if (is_large(file->opts) &&
 		S_ISLNK(file->stats->st_mode))
 	{
-		ft_putstr(" -> ");
+		write(1, " -> ", 4);
 		buff = ft_strnew(BUFF_SIZE);
 		readlink(file->path, buff, BUFF_SIZE);
 		ft_putstr(buff);
@@ -32,7 +32,11 @@ void		print_enoent(void *item)
 	t_file	*file;
 
 	file = (t_file*)item;
-	ft_dprintf(2, "ft_ls: %s: %s\n", file->name, strerror(file->error));
+	write(2, "ft_ls: ", 7);
+	ft_putstr_fd(file->name, 2);
+	write(2, ": ", 2);
+	ft_putstr_fd(strerror(file->error), 2);
+	write(2, "\n", 1);
 }
 
 void		print_name(t_file *file, char *suffix)
@@ -62,7 +66,9 @@ int			print_column(t_file *file, char *s1)
 	if (file->opts->c)
 	{
 		s2 = (--file->c_mw->count % 3 == 0) ? "\n" : "";
-		ft_printf("%-20s%s%s", file->name, s1, s2);
+		ft_printf("%-20s", file->name);
+		ft_putstr(s1);
+		ft_putstr(s2);
 		return (1);
 	}
 	return (0);
@@ -83,8 +89,13 @@ void		print_item(void *item)
 		print_lgformat(file);
 	if (print_column(file, s1))
 		return ;
-	(file->opts->cap_g) ? print_name(file, s1) :
-						ft_printf("%s%s", file->name, s1);
+	if (file->opts->cap_g)
+		print_name(file, s1);
+	else
+	{
+		ft_putstr(file->name);
+		ft_putstr(s1);
+	}
 	print_orglink(file);
 	ft_putstr((--file->c_mw->count) ? s2 : "\n");
 }

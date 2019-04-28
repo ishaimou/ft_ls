@@ -6,7 +6,7 @@
 /*   By: ishaimou <ishaimou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 16:36:48 by ishaimou          #+#    #+#             */
-/*   Updated: 2019/04/27 16:46:20 by ishaimou         ###   ########.fr       */
+/*   Updated: 2019/04/28 10:54:54 by ishaimou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,13 @@ static void		print_aclxattr(t_file *file)
 	acl_t		acl;
 
 	acl = acl_get_link_np(file->path, ACL_TYPE_EXTENDED);
-	if (listxattr(file->path, NULL, 0, XATTR_NOFOLLOW) && !errno)
-		ft_putchar('@');
-	else if (acl)
+	if (acl)
 	{
 		ft_putchar('+');
 		acl_free(acl);
 	}
+	else if (listxattr(file->path, NULL, 0, XATTR_NOFOLLOW) && !errno)
+		ft_putchar('@');
 	else
 		ft_putchar(' ');
 }
@@ -64,7 +64,7 @@ void			print_modes(t_file *file)
 	(file->stats->st_mode & S_IROTH) ? ft_putchar('r') : ft_putchar('-');
 	(file->stats->st_mode & S_IWOTH) ? ft_putchar('w') : ft_putchar('-');
 	if (file->stats->st_mode & S_ISVTX)
-		ft_putchar('t');
+		ft_putchar('T');
 	else
 		(file->stats->st_mode & S_IXOTH) ? ft_putchar('x') : ft_putchar('-');
 	print_aclxattr(file);

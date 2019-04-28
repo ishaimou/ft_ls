@@ -6,7 +6,7 @@
 /*   By: ishaimou <ishaimou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 14:47:51 by ishaimou          #+#    #+#             */
-/*   Updated: 2019/04/28 08:15:18 by ishaimou         ###   ########.fr       */
+/*   Updated: 2019/04/28 09:58:41 by ishaimou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 void				init_opts(t_ls *ls)
 {
-	ls->argc = 0;
+	ls->nbr_dir = 0;
+	ls->nbr_reg = 0;
 	ls->opts.l = 0;
 	ls->opts.a = 0;
 	ls->opts.r = 0;

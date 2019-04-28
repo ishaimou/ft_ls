@@ -6,11 +6,20 @@
 /*   By: ishaimou <ishaimou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 16:36:48 by ishaimou          #+#    #+#             */
-/*   Updated: 2019/04/28 10:54:54 by ishaimou         ###   ########.fr       */
+/*   Updated: 2019/04/28 10:57:05 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
+
+static int		is_x_set(t_file *file)
+{
+	if ((S_IXUSR & file->stats->st_mode) ||
+			(S_IXGRP & file->stats->st_mode) ||
+			(S_IXOTH & file->stats->st_mode))
+		return (1);
+	return (0);
+}
 
 static void		print_type(t_file *file)
 {
@@ -35,37 +44,48 @@ static void		print_aclxattr(t_file *file)
 	acl_t		acl;
 
 	acl = acl_get_link_np(file->path, ACL_TYPE_EXTENDED);
-	if (acl)
+	if (listxattr(file->path, NULL, 0, XATTR_NOFOLLOW))
+		ft_putchar('@');
+	else if (acl)
 	{
 		ft_putchar('+');
 		acl_free(acl);
 	}
-	else if (listxattr(file->path, NULL, 0, XATTR_NOFOLLOW) && !errno)
-		ft_putchar('@');
 	else
 		ft_putchar(' ');
+}
+
+static void		print_perm(t_file *file)
+{
+	(file->stats->st_mode & S_IRUSR) ? ft_putchar('r') : ft_putchar('-');
+	(file->stats->st_mode & S_IWUSR) ? ft_putchar('w') : ft_putchar('-');
+	if ((file->stats->st_mode & S_ISUID) && is_x_set(file))
+		ft_putchar('s');
+	else if (file->stats->st_mode & S_ISUID)
+		ft_putchar('S');
+	else
+		(file->stats->st_mode & S_IXUSR) ? ft_putchar('x') : ft_putchar('-');
+	(file->stats->st_mode & S_IRGRP) ? ft_putchar('r') : ft_putchar('-');
+	(file->stats->st_mode & S_IWGRP) ? ft_putchar('w') : ft_putchar('-');
+	if ((file->stats->st_mode & S_ISGID) && is_x_set(file))
+		ft_putchar('s');
+	else if (file->stats->st_mode & S_ISGID)
+		ft_putchar('S');
+	else
+		(file->stats->st_mode & S_IXGRP) ? ft_putchar('x') : ft_putchar('-');
+	(file->stats->st_mode & S_IROTH) ? ft_putchar('r') : ft_putchar('-');
+	(file->stats->st_mode & S_IWOTH) ? ft_putchar('w') : ft_putchar('-');
+	if (file->stats->st_mode & S_ISVTX && is_x_set(file))
+		ft_putchar('t');
+	else if (file->stats->st_mode & S_ISVTX)
+		ft_putchar('T');
+	else
+		(file->stats->st_mode & S_IXOTH) ? ft_putchar('x') : ft_putchar('-');
 }
 
 void			print_modes(t_file *file)
 {
 	print_type(file);
-	(file->stats->st_mode & S_IRUSR) ? ft_putchar('r') : ft_putchar('-');
-	(file->stats->st_mode & S_IWUSR) ? ft_putchar('w') : ft_putchar('-');
-	if (file->stats->st_mode & S_ISUID)
-		ft_putchar('s');
-	else
-		(file->stats->st_mode & S_IXUSR) ? ft_putchar('x') : ft_putchar('-');
-	(file->stats->st_mode & S_IRGRP) ? ft_putchar('r') : ft_putchar('-');
-	(file->stats->st_mode & S_IWGRP) ? ft_putchar('w') : ft_putchar('-');
-	if (file->stats->st_mode & S_ISGID)
-		ft_putchar('s');
-	else
-		(file->stats->st_mode & S_IXGRP) ? ft_putchar('x') : ft_putchar('-');
-	(file->stats->st_mode & S_IROTH) ? ft_putchar('r') : ft_putchar('-');
-	(file->stats->st_mode & S_IWOTH) ? ft_putchar('w') : ft_putchar('-');
-	if (file->stats->st_mode & S_ISVTX)
-		ft_putchar('T');
-	else
-		(file->stats->st_mode & S_IXOTH) ? ft_putchar('x') : ft_putchar('-');
+	print_perm(file);
 	print_aclxattr(file);
 }

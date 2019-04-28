@@ -6,20 +6,20 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 15:16:23 by obelouch          #+#    #+#             */
-/*   Updated: 2019/04/28 13:18:53 by ishaimou         ###   ########.fr       */
+/*   Updated: 2019/04/28 22:06:25 by ishaimou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-void			total_destruct(t_file *file)
+static void			total_rmz(t_file *file)
 {
-	if (is_large(file->opts) && file->p_mw->total != -1)
+	if (is_large(file->opts) && file->c_mw->total != -1)
 	{
 		write(1, "total ", 6);
-		ft_putnbr(file->p_mw->total);
+		ft_putnbr(file->c_mw->total);
 		write(1, "\n", 1);
-		file->p_mw->total = -1;
+		file->c_mw->total = -1;
 	}
 }
 
@@ -28,6 +28,7 @@ static void			lsdir(t_file *file, DIR *fluxdir)
 	t_file			*child_file;
 	struct dirent	*dir;
 
+	child_file = NULL;
 	while ((dir = readdir(fluxdir)))
 		if (file->opts->a || (!is_dot(dir->d_name) &&
 					(dir->d_name[0] != '.' || file->opts->cap_a)))
@@ -36,7 +37,8 @@ static void			lsdir(t_file *file, DIR *fluxdir)
 			fill_mw(file->p_mw, child_file);
 			bt_insert_item(&file->node, child_file, ft_cmp);
 		}
-	total_destruct(file);
+	if (child_file)
+		total_rmz(child_file);
 	bt_apply_infix(file->node, print_item);
 	bt_free(&file->node, &freef);
 }
@@ -47,7 +49,7 @@ static void			lsr(void *arg)
 
 	file_dir = (t_file*)arg;
 	ft_printf("\n%s:\n", file_dir->path);
-	total_destruct(file_dir);
+	total_rmz(file_dir);
 	free(file_dir->p_mw);
 	file_dir->p_mw = NULL;
 	ft_ls(arg);
@@ -58,6 +60,7 @@ static void			lsdir_r(t_file *file, DIR *fluxdir)
 	t_file			*child_file;
 	struct dirent	*dir;
 
+	child_file = NULL;
 	while ((dir = readdir(fluxdir)))
 		if (file->opts->a || (!is_dot(dir->d_name) &&
 					(dir->d_name[0] != '.' || file->opts->cap_a)))
@@ -71,7 +74,8 @@ static void			lsdir_r(t_file *file, DIR *fluxdir)
 			}
 			bt_insert_item(&file->node, child_file, ft_cmp);
 		}
-	total_destruct(file);
+	if (child_file)
+		total_rmz(child_file);
 	bt_apply_infix(file->node, print_item);
 	if (file->dirs)
 		bt_apply_infix(file->dirs, lsr);

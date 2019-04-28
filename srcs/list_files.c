@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 15:16:23 by obelouch          #+#    #+#             */
-/*   Updated: 2019/04/28 10:17:58 by ishaimou         ###   ########.fr       */
+/*   Updated: 2019/04/28 11:16:25 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void				ft_ls(void *arg)
 	if (S_ISDIR(file->stats->st_mode))
 	{
 		fluxdir = opendir(file->path);
-		if (permis_error(errno))
+		if (permis_error(file->name, errno))
 			return ;
 		file->p_mw = (t_max*)malloc(sizeof(t_max));
 		init_mw(file->p_mw);

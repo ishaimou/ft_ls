@@ -6,7 +6,7 @@
 /*   By: ishaimou <ishaimou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 16:36:48 by ishaimou          #+#    #+#             */
-/*   Updated: 2019/04/28 10:57:05 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/04/28 11:35:51 by ishaimou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,11 @@ static void		print_aclxattr(t_file *file)
 	if (listxattr(file->path, NULL, 0, XATTR_NOFOLLOW))
 		ft_putchar('@');
 	else if (acl)
-	{
 		ft_putchar('+');
-		acl_free(acl);
-	}
 	else
 		ft_putchar(' ');
+	if (acl)
+		acl_free(acl);
 }
 
 static void		print_perm(t_file *file)

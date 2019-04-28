@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 14:55:51 by obelouch          #+#    #+#             */
-/*   Updated: 2019/04/27 19:18:34 by ishaimou         ###   ########.fr       */
+/*   Updated: 2019/04/28 08:02:19 by ishaimou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ typedef struct	s_max
 
 typedef struct	s_file
 {
+	int			*ac;
 	int			error;
 	t_opt		*opts;
 	char		*name;
@@ -81,6 +82,7 @@ typedef struct	s_ls
 {
 	t_max		mw;
 	t_opt		opts;
+	int			argc;
 	t_file		*file;
 	t_bt		*root;
 	t_bt		*invtree;

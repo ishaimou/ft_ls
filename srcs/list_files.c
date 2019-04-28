@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 15:16:23 by obelouch          #+#    #+#             */
-/*   Updated: 2019/04/27 20:09:25 by ishaimou         ###   ########.fr       */
+/*   Updated: 2019/04/28 08:45:46 by ishaimou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,27 +69,22 @@ static void			lsdir_r(t_file *file, DIR *fluxdir)
 
 void				ft_ls(void *arg)
 {
-	t_file			*file_arg;
+	t_file			*file;
 	DIR				*fluxdir;
 
-	file_arg = (t_file*)arg;
+	file = (t_file*)arg;
 	errno = 0;
-	if (S_ISDIR(file_arg->stats->st_mode))
+	if (S_ISDIR(file->stats->st_mode))
 	{
-		if (file_arg->c_mw->total != -1 && is_large(file_arg->opts))
-		{
-			ft_printf("total %d\n", file_arg->c_mw->total);
-			file_arg->c_mw->total = -1;
-		}
-		fluxdir = opendir(file_arg->path);
+		fluxdir = opendir(file->path);
 		if (permis_error(errno))
 			return ;
-		file_arg->p_mw = (t_max*)malloc(sizeof(t_max));
-		init_mw(file_arg->p_mw);
-		(file_arg->opts->cap_r) ? lsdir_r(file_arg, fluxdir)
-			: lsdir(file_arg, fluxdir);
+		file->p_mw = (t_max*)malloc(sizeof(t_max));
+		init_mw(file->p_mw);
+		(file->opts->cap_r) ? lsdir_r(file, fluxdir)
+			: lsdir(file, fluxdir);
 		closedir(fluxdir);
 	}
 	else
-		print_item((void*)file_arg);
+		print_item((void*)file);
 }

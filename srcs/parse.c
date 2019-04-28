@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 15:27:06 by obelouch          #+#    #+#             */
-/*   Updated: 2019/04/27 16:17:52 by ishaimou         ###   ########.fr       */
+/*   Updated: 2019/04/28 08:34:31 by ishaimou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ static int	parse_default(int i, int ac, t_ls *ls)
 	if (i == ac)
 	{
 		file = init_file(".", "", &ls->opts);
+		file->ac = &ls->argc;
+		ls->argc++;
 		fill_mw(&ls->mw, file);
 		bt_insert_item(&ls->root, file, ft_cmp);
 		return (1);
@@ -41,10 +43,13 @@ void		parse(int ac, char **av, t_ls *ls)
 	while (i < ac)
 	{
 		file = init_file(av[i++], "", &ls->opts);
+		file->ac = &ls->argc;
 		if (file->error)
 			bt_insert_item(&ls->invtree, file, ft_cmp_enoent);
 		else
 		{
+			if (S_ISDIR(file->stats->st_mode))
+		 		ls->argc++;
 			fill_mw(&ls->mw, file);
 			bt_insert_item(&ls->root, file, ft_cmp_arg);
 		}

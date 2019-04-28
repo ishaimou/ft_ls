@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 15:08:05 by obelouch          #+#    #+#             */
-/*   Updated: 2019/04/27 17:58:46 by ishaimou         ###   ########.fr       */
+/*   Updated: 2019/04/28 08:45:35 by ishaimou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static void		print_grp_own(t_file *file)
 
 void			print_lgformat(t_file *file)
 {
-	if (file->c_mw->total != -1)
+	if (file->c_mw->total != -1 && S_ISDIR(file->stats->st_mode))
 	{
 		ft_printf("total %d\n", file->c_mw->total);
 		file->c_mw->total = -1;

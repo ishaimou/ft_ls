@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 14:59:00 by obelouch          #+#    #+#             */
-/*   Updated: 2019/04/27 17:59:13 by ishaimou         ###   ########.fr       */
+/*   Updated: 2019/04/28 07:28:13 by ishaimou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,9 +83,9 @@ int			ft_cmp_arg(void *item1, void *item2)
 	f2 = (t_file*)item2;
 	rev = (f1->opts->r) ? -1 : 1;
 	if (pure_dir(f1) && !pure_dir(f2))
-		return (rev);
+		return (1);
 	if (!pure_dir(f1) && pure_dir(f2))
-		return (-rev);
+		return (-1);
 	if (f1->opts->cap_s)
 		ret = ft_cmp_size(f1, f2);
 	else if (f1->opts->t)

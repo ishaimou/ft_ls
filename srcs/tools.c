@@ -6,7 +6,7 @@
 /*   By: ishaimou <ishaimou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 16:19:27 by ishaimou          #+#    #+#             */
-/*   Updated: 2019/04/28 11:16:13 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/04/28 11:55:15 by ishaimou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,6 @@ int		is_dot(char *name)
 	return (0);
 }
 
-/*int		permis_error(int error)
-  {
-  if (error)
-  {
-  perror("ft_ls");
-  errno = 0;
-  return (1);
-  }
-  return (0);
-  }
-  */
 int		permis_error(char *name, int error)
 {
 	if (error)
@@ -66,9 +55,9 @@ int		is_large(t_opt *opts)
 int		is_special(mode_t mode)
 {
 	if (S_ISCHR(mode) ||
-			S_ISBLK(mode) ||
-			S_ISFIFO(mode) ||
-			S_ISSOCK(mode))
+		S_ISBLK(mode) ||
+		S_ISFIFO(mode) ||
+		S_ISSOCK(mode))
 		return (1);
 	return (0);
 }

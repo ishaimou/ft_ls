@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 15:16:23 by obelouch          #+#    #+#             */
-/*   Updated: 2019/04/28 11:16:25 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/04/28 12:45:45 by ishaimou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,12 @@ static void			lsdir(t_file *file, DIR *fluxdir)
 
 	while ((dir = readdir(fluxdir)))
 	{
+		if (!dir)
+		{
+			perror("ft_ls");
+			return ;
+		}
+
 		if (file->opts->a || (!is_dot(dir->d_name) &&
 					(dir->d_name[0] != '.' || file->opts->cap_a)))
 		{
@@ -61,6 +67,12 @@ static void			lsdir_r(t_file *file, DIR *fluxdir)
 	struct dirent	*dir;
 
 	while ((dir = readdir(fluxdir)))
+	{
+		if (!dir)
+		{
+			perror("ft_ls");
+			return ;
+		}
 		if (file->opts->a || (!is_dot(dir->d_name) &&
 					(dir->d_name[0] != '.' || file->opts->cap_a)))
 		{
@@ -73,6 +85,7 @@ static void			lsdir_r(t_file *file, DIR *fluxdir)
 			}
 			bt_insert_item(&file->node, child_file, ft_cmp);
 		}
+	}
 	total_destruct(child_file);
 	bt_apply_infix(file->node, print_item);
 	if (file->dirs)
@@ -90,6 +103,8 @@ void				ft_ls(void *arg)
 	errno = 0;
 	if (S_ISDIR(file->stats->st_mode))
 	{
+		if (!(file->stats->st_mode & S_IXUSR))
+			return ;
 		fluxdir = opendir(file->path);
 		if (permis_error(file->name, errno))
 			return ;

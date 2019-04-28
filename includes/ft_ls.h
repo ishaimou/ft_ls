@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 14:55:51 by obelouch          #+#    #+#             */
-/*   Updated: 2019/04/28 11:16:41 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/04/28 13:22:26 by ishaimou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ int				is_dot(char *name);
 int				is_large(t_opt *opts);
 int				is_exec(t_file *file);
 int				is_special(mode_t mode);
+int				pure_dir(t_file *file);
 int				permis_error(char *name, int error);
 void			print_enoent(void *item);
 void			print_item(void *item);

@@ -6,7 +6,7 @@
 #    By: ishaimou <ishaimou@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/27 13:58:33 by ishaimou          #+#    #+#              #
-#    Updated: 2019/04/27 16:39:37 by ishaimou         ###   ########.fr        #
+#    Updated: 2019/04/28 13:22:53 by ishaimou         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ FLAGS = -Wall -Werror -Wextra
 
 SRCS = main.c parse.c add_opts.c init.c \
 	   list_files.c print_data.c print_lformat.c \
-	   ft_cmp.c freef.c tools.c print_modes.c
+	   ft_cmp.c freef.c tools.c tools2.c print_modes.c
 SRCS_DIR = $(addprefix srcs/, $(SRCS))
 
 all: $(NAME)

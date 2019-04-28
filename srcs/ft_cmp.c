@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 14:59:00 by obelouch          #+#    #+#             */
-/*   Updated: 2019/04/28 07:28:13 by ishaimou         ###   ########.fr       */
+/*   Updated: 2019/04/28 13:21:33 by ishaimou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,14 +62,6 @@ int			ft_cmp(void *item1, void *item2)
 	else
 		ret = ft_strcmp(f1->name, f2->name);
 	return (ret * rev);
-}
-
-int			pure_dir(t_file *file)
-{
-	if (!is_dot(file->name) &&
-		S_ISDIR(file->stats->st_mode))
-		return (1);
-	return (0);
 }
 
 int			ft_cmp_arg(void *item1, void *item2)

@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 15:16:23 by obelouch          #+#    #+#             */
-/*   Updated: 2019/04/28 12:45:45 by ishaimou         ###   ########.fr       */
+/*   Updated: 2019/04/28 13:18:53 by ishaimou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,6 @@ static void			lsdir(t_file *file, DIR *fluxdir)
 	struct dirent	*dir;
 
 	while ((dir = readdir(fluxdir)))
-	{
-		if (!dir)
-		{
-			perror("ft_ls");
-			return ;
-		}
-
 		if (file->opts->a || (!is_dot(dir->d_name) &&
 					(dir->d_name[0] != '.' || file->opts->cap_a)))
 		{
@@ -43,7 +36,6 @@ static void			lsdir(t_file *file, DIR *fluxdir)
 			fill_mw(file->p_mw, child_file);
 			bt_insert_item(&file->node, child_file, ft_cmp);
 		}
-	}
 	total_destruct(child_file);
 	bt_apply_infix(file->node, print_item);
 	bt_free(&file->node, &freef);
@@ -67,12 +59,6 @@ static void			lsdir_r(t_file *file, DIR *fluxdir)
 	struct dirent	*dir;
 
 	while ((dir = readdir(fluxdir)))
-	{
-		if (!dir)
-		{
-			perror("ft_ls");
-			return ;
-		}
 		if (file->opts->a || (!is_dot(dir->d_name) &&
 					(dir->d_name[0] != '.' || file->opts->cap_a)))
 		{
@@ -85,7 +71,6 @@ static void			lsdir_r(t_file *file, DIR *fluxdir)
 			}
 			bt_insert_item(&file->node, child_file, ft_cmp);
 		}
-	}
 	total_destruct(child_file);
 	bt_apply_infix(file->node, print_item);
 	if (file->dirs)

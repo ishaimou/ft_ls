@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 15:27:06 by obelouch          #+#    #+#             */
-/*   Updated: 2019/04/28 09:58:07 by ishaimou         ###   ########.fr       */
+/*   Updated: 2019/04/28 13:17:02 by ishaimou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,7 @@ void		parse(int ac, char **av, t_ls *ls)
 			bt_insert_item(&ls->invtree, file, ft_cmp_enoent);
 		else
 		{
-			if (S_ISDIR(file->stats->st_mode))
-		 		ls->nbr_dir++;
-			else
-				ls->nbr_reg++;
+			(S_ISDIR(file->stats->st_mode)) ? ls->nbr_dir++ : ls->nbr_reg++;
 			fill_mw(&ls->mw, file);
 			bt_insert_item(&ls->root, file, ft_cmp_arg);
 		}

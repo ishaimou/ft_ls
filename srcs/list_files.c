@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 15:16:23 by obelouch          #+#    #+#             */
-/*   Updated: 2019/04/28 22:06:25 by ishaimou         ###   ########.fr       */
+/*   Updated: 2019/04/29 11:19:23 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,14 @@ static void			lsr(void *arg)
 	t_file			*file_dir;
 
 	file_dir = (t_file*)arg;
-	ft_printf("\n%s:\n", file_dir->path);
-	total_rmz(file_dir);
-	free(file_dir->p_mw);
-	file_dir->p_mw = NULL;
-	ft_ls(arg);
+	if (file_dir->rcs == 1)
+	{
+		ft_printf("\n%s:\n", file_dir->path);
+		total_rmz(file_dir);
+		free(file_dir->p_mw);
+		file_dir->p_mw = NULL;
+		ft_ls(arg);
+	}
 }
 
 static void			lsdir_r(t_file *file, DIR *fluxdir)
@@ -70,17 +73,15 @@ static void			lsdir_r(t_file *file, DIR *fluxdir)
 			if (dir->d_type == DT_DIR && !is_dot(dir->d_name))
 			{
 				child_file->p_mw = (t_max*)malloc(sizeof(t_max));
-				bt_insert_item(&file->dirs, child_file, ft_cmp);
+				child_file->rcs = 1;
 			}
 			bt_insert_item(&file->node, child_file, ft_cmp);
 		}
 	if (child_file)
 		total_rmz(child_file);
 	bt_apply_infix(file->node, print_item);
-	if (file->dirs)
-		bt_apply_infix(file->dirs, lsr);
+	bt_apply_infix(file->node, lsr);
 	bt_free(&file->node, &freef);
-	bt_free_tree(&file->dirs);
 }
 
 void				ft_ls(void *arg)

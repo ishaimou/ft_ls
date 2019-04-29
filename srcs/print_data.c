@@ -6,7 +6,7 @@
 /*   By: ishaimou <ishaimou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 16:41:42 by ishaimou          #+#    #+#             */
-/*   Updated: 2019/04/28 10:31:02 by ishaimou         ###   ########.fr       */
+/*   Updated: 2019/04/29 12:15:48 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,36 +39,55 @@ void		print_enoent(void *item)
 	write(2, "\n", 1);
 }
 
-void		print_name(t_file *file, char *suffix)
+void		print_name(t_file *file)
 {
-	if (is_exec(file))
-		ft_printf("%{PURPLE}%s%s%{eoc}", file->name, suffix);
-	else if (S_ISREG(file->stats->st_mode))
-		ft_printf("%s%s", file->name, suffix);
+	if (S_ISREG(file->stats->st_mode))
+		ft_printf("%s", file->name);
 	else if (S_ISDIR(file->stats->st_mode))
-		ft_printf("%{CYAN}%s%s%{eoc}", file->name, suffix);
-	else if (S_ISCHR(file->stats->st_mode))
-		ft_printf("%{BLUE}%s%s%{eoc}", file->name, suffix);
-	else if (S_ISBLK(file->stats->st_mode))
-		ft_printf("%{blue}%s%s%{eoc}", file->name, suffix);
-	else if (S_ISFIFO(file->stats->st_mode))
-		ft_printf("%{yellow}%s%s%{eoc}", file->name, suffix);
+		ft_printf("%{CYAN}%s%{eoc}", file->name);
+	else if (is_exec(file))
+		ft_printf("%{PURPLE}%s%{eoc}", file->name);
 	else if (S_ISLNK(file->stats->st_mode))
-		ft_printf("%{red}%s%s%{eoc}", file->name, suffix);
+		ft_printf("%{red}%s%{eoc}", file->name);
+	else if (S_ISCHR(file->stats->st_mode))
+		ft_printf("%{BLUE}%s%{eoc}", file->name);
+	else if (S_ISBLK(file->stats->st_mode))
+		ft_printf("%{blue}%s%{eoc}", file->name);
+	else if (S_ISFIFO(file->stats->st_mode))
+		ft_printf("%{yellow}%s%{eoc}", file->name);
 	else if (S_ISSOCK(file->stats->st_mode))
-		ft_printf("%{green}%s%s%{eoc}", file->name, suffix);
+		ft_printf("%{green}%s%{eoc}", file->name);
 }
 
-int			print_column(t_file *file, char *s1)
+void		print_name_p(t_file *file)
 {
-	char		*s2;
+	if (S_ISREG(file->stats->st_mode))
+		ft_printf("%s/", file->name);
+	else if (S_ISDIR(file->stats->st_mode))
+		ft_printf("%{CYAN}%s/%{eoc}", file->name);
+	else if (is_exec(file))
+		ft_printf("%{PURPLE}%s/%{eoc}", file->name);
+	else if (S_ISLNK(file->stats->st_mode))
+		ft_printf("%{red}%s/%{eoc}", file->name);
+	else if (S_ISCHR(file->stats->st_mode))
+		ft_printf("%{BLUE}%s/%{eoc}", file->name);
+	else if (S_ISBLK(file->stats->st_mode))
+		ft_printf("%{blue}%s/%{eoc}", file->name);
+	else if (S_ISFIFO(file->stats->st_mode))
+		ft_printf("%{yellow}%s/%{eoc}", file->name);
+	else if (S_ISSOCK(file->stats->st_mode))
+		ft_printf("%{green}%s/%{eoc}", file->name);
+}
 
+int			print_column(t_file *file, int is_p)
+{
 	if (file->opts->c)
 	{
-		s2 = (--file->c_mw->count % 3 == 0) ? "\n" : "";
 		ft_printf("%-20s", file->name);
-		ft_putstr(s1);
-		ft_putstr(s2);
+		if (is_p)
+			ft_putchar('/');
+		if (--file->c_mw->count % 3 == 0)
+			ft_putchar('\n');
 		return (1);
 	}
 	return (0);
@@ -77,25 +96,26 @@ int			print_column(t_file *file, char *s1)
 void		print_item(void *item)
 {
 	t_file			*file;
-	char			*s1;
-	char			*s2;
+	char			*s;
+	int				is_p;
 
 	file = (t_file*)item;
-	s1 = (file->opts->p && S_ISDIR(file->stats->st_mode)) ? "/" : "";
-	s2 = (file->opts->m) ? ", " : "\n";
+	is_p = (file->opts->p && S_ISDIR(file->stats->st_mode)) ? 1 : 0;
+	s = (file->opts->m) ? ", " : "\n";
 	if (file->opts->i)
 		ft_printf("%ld ", (long)file->stats->st_ino);
 	if (is_large(file->opts))
 		print_lgformat(file);
-	if (print_column(file, s1))
+	if (print_column(file, is_p))
 		return ;
 	if (file->opts->cap_g)
-		print_name(file, s1);
+		(is_p) ? print_name_p(file) : print_name(file);
 	else
 	{
 		ft_putstr(file->name);
-		ft_putstr(s1);
+		if (is_p)
+			ft_putchar('/');
 	}
 	print_orglink(file);
-	ft_putstr((--file->c_mw->count) ? s2 : "\n");
+	ft_putstr((--file->c_mw->count) ? s : "\n");
 }

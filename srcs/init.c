@@ -6,7 +6,7 @@
 /*   By: ishaimou <ishaimou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 14:47:51 by ishaimou          #+#    #+#             */
-/*   Updated: 2019/04/28 21:44:03 by ishaimou         ###   ########.fr       */
+/*   Updated: 2019/04/29 11:18:04 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,9 +97,9 @@ t_file				*init_file(char *name, char *path, t_opt *opts)
 	file->path = set_path(file, path);
 	file->opts = opts;
 	file->node = NULL;
-	file->dirs = NULL;
 	file->p_mw = NULL;
 	file->c_mw = NULL;
+	file->rcs = 0;
 	if (!(file->stats = (struct stat*)malloc(sizeof(struct stat))))
 		exit(-1);
 	lstat(file->path, file->stats);

@@ -6,7 +6,7 @@
 /*   By: ishaimou <ishaimou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 14:47:50 by ishaimou          #+#    #+#             */
-/*   Updated: 2019/04/28 10:30:54 by ishaimou         ###   ########.fr       */
+/*   Updated: 2019/04/29 12:22:47 by ishaimou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ static void		ls_arg(void *item)
 			(*(file->nbr_reg))++;
 		ft_printf("%s:\n", file->name);
 	}
-	if (*(file->nbr_dir) == 1 && *(file->nbr_reg) > 0 && !S_ISREG(file->stats->st_mode))
+	if (*(file->nbr_dir) == 1 && *(file->nbr_reg) > 0
+			&& !S_ISREG(file->stats->st_mode))
 		ft_printf("\n%s:\n", file->name);
 	ft_ls(item);
 }

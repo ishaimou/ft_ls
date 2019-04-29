@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 15:08:05 by obelouch          #+#    #+#             */
-/*   Updated: 2019/04/29 12:13:19 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/04/29 12:23:23 by ishaimou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ static void		print_amtime(t_file *file)
 	str_time = ft_strndup(am_time + 11, 5);
 	ft_printf("%6s ", date);
 	tmp = ABS(time(NULL) - ((file->opts->u) ?
-			file->stats->st_atimespec.tv_sec : file->stats->st_mtimespec.tv_sec));
+			file->stats->st_atimespec.tv_sec :
+			file->stats->st_mtimespec.tv_sec));
 	ft_printf("%5s ", (tmp > 15780000) ? year : str_time);
 	free(str_time);
 	free(date);

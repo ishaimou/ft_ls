@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 14:55:51 by obelouch          #+#    #+#             */
-/*   Updated: 2019/04/29 11:02:52 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/04/29 12:33:49 by ishaimou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ typedef struct	s_file
 	char		*path;
 	struct stat	*stats;
 	t_bt		*node;
-	t_bt		*dirs;
 	t_max		*c_mw;
 	t_max		*p_mw;
 	int			*nbr_reg;

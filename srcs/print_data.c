@@ -6,7 +6,7 @@
 /*   By: ishaimou <ishaimou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 16:41:42 by ishaimou          #+#    #+#             */
-/*   Updated: 2019/04/29 12:15:48 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/04/29 12:24:29 by ishaimou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,18 +25,6 @@ static void	print_orglink(t_file *file)
 		ft_putstr(buff);
 		free(buff);
 	}
-}
-
-void		print_enoent(void *item)
-{
-	t_file	*file;
-
-	file = (t_file*)item;
-	write(2, "ft_ls: ", 7);
-	ft_putstr_fd(file->name, 2);
-	write(2, ": ", 2);
-	ft_putstr_fd(strerror(file->error), 2);
-	write(2, "\n", 1);
 }
 
 void		print_name(t_file *file)

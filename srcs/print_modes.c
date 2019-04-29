@@ -6,20 +6,11 @@
 /*   By: ishaimou <ishaimou@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 16:36:48 by ishaimou          #+#    #+#             */
-/*   Updated: 2019/04/28 21:50:55 by ishaimou         ###   ########.fr       */
+/*   Updated: 2019/04/29 11:22:55 by ishaimou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
-
-static int		is_x_set(t_file *file)
-{
-	if ((S_IXUSR & file->stats->st_mode) ||
-			(S_IXGRP & file->stats->st_mode) ||
-			(S_IXOTH & file->stats->st_mode))
-		return (1);
-	return (0);
-}
 
 static void		print_type(t_file *file)
 {
@@ -58,7 +49,7 @@ static void		print_perm(t_file *file)
 {
 	(file->stats->st_mode & S_IRUSR) ? ft_putchar('r') : ft_putchar('-');
 	(file->stats->st_mode & S_IWUSR) ? ft_putchar('w') : ft_putchar('-');
-	if ((file->stats->st_mode & S_ISUID) && is_x_set(file))
+	if ((file->stats->st_mode & S_ISUID) && (S_IXUSR & file->stats->st_mode))
 		ft_putchar('s');
 	else if (file->stats->st_mode & S_ISUID)
 		ft_putchar('S');
@@ -66,7 +57,7 @@ static void		print_perm(t_file *file)
 		(file->stats->st_mode & S_IXUSR) ? ft_putchar('x') : ft_putchar('-');
 	(file->stats->st_mode & S_IRGRP) ? ft_putchar('r') : ft_putchar('-');
 	(file->stats->st_mode & S_IWGRP) ? ft_putchar('w') : ft_putchar('-');
-	if ((file->stats->st_mode & S_ISGID) && is_x_set(file))
+	if ((file->stats->st_mode & S_ISGID) && (S_IXGRP & file->stats->st_mode))
 		ft_putchar('s');
 	else if (file->stats->st_mode & S_ISGID)
 		ft_putchar('S');
@@ -74,7 +65,7 @@ static void		print_perm(t_file *file)
 		(file->stats->st_mode & S_IXGRP) ? ft_putchar('x') : ft_putchar('-');
 	(file->stats->st_mode & S_IROTH) ? ft_putchar('r') : ft_putchar('-');
 	(file->stats->st_mode & S_IWOTH) ? ft_putchar('w') : ft_putchar('-');
-	if (file->stats->st_mode & S_ISVTX && is_x_set(file))
+	if (file->stats->st_mode & S_ISVTX && (S_IXOTH & file->stats->st_mode))
 		ft_putchar('t');
 	else if (file->stats->st_mode & S_ISVTX)
 		ft_putchar('T');
